@@ -148,7 +148,7 @@ class searchIndexer(dict):
     s=zlib.decompress(f.read())
     for i in range(0,len(s),size):
       u=struct.unpack(fmt,s[i:i+size])
-      self[u[0].decode('utf8')]=searchIndexerItem(bits=u[1:])
+      self[u[0].rstrip('\0').decode('utf8')]=searchIndexerItem(bits=u[1:])
 
   def find(self, words):
     if not words: return None
