@@ -1,0 +1,5 @@
+#! /usr/bin/python
+# -*- coding: UTF-8 -*-
+from othman.gtkUi import main
+main()
+
