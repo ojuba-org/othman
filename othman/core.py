@@ -20,8 +20,8 @@ Copyright © 2009-2010, Muayyad Alsadi <alsadi@ojuba.org>
 """
 import sys, os, os.path, time
 import sqlite3
-import struct,zlib
-from itertools import izip
+import array
+from itertools import imap
 
 def guessDataDir():
   if not hasattr(sys, "frozen"):
@@ -89,84 +89,89 @@ normalize_tb={
 
 def normalize(s): return s.translate(normalize_tb)
 
-class searchIndexerItem:
-  def __init__(self, ayaId=None, bits=None):
-    if bits:
-      self.bits=bits
-    else:
-      self.bits=[0 for i in range(780)]
-      if ayaId: self.setAyaId(ayaId)
-  
-  def setAyaId(self, ayaId):
-    """
-    ayaId [1-6236]
-    """
-    i=ayaId-1
-    self.bits[(i>>3)]|=(1<<(i&7))
-  
+class searchIndexerItem(set):
+  def __init__(self,*a):
+    set.__init__(self, *a)
+
+  def __or__(self, y):
+    return self.union(y)
+
   def __and__(self, y):
-    return searchIndexerItem(bits=[i and j for (i,j) in izip(self.bits, y.bits)])
+    return self.intersection(y)
   
   def toAyaIdList(self):
-    return filter(lambda k: k,
-      sum(map( lambda (i,j):
-      [ (j & 1) and (i<<3)+1,
-        (j & 2) and (i<<3)+2,
-        (j & 4) and (i<<3)+3,
-        (j & 8) and (i<<3)+4,
-        (j & 16) and (i<<3)+5,
-        (j & 32) and (i<<3)+6,
-        (j & 64) and (i<<3)+7,
-        (j & 128) and (i<<3)+8,
-        ]
-      ,filter(lambda (ii,jj): jj,enumerate(self.bits))),[]))
+    l=list(self)
+    l.sort()
+    return l
 
-class searchIndexer(dict):
-  def __init__(self, normalize=normalize):
-    dict.__init__(self)
+class searchIndexer:
+  def __init__(self, unlink=False, normalize=normalize):
+    d=guessDataDir()
+    fn=os.path.join(os.path.abspath(d), "ix.db")
+    if unlink and os.path.exists(fn): os.unlink(fn)
+    self.cn=sqlite3.connect(fn)
+    self.d={}
     self.normalize=normalize
     self.maxWordLen=0
-  
-  def save(self, fn):
-    s=""
-    m=(self.maxWordLen*2)
-    if os.path.exists(fn): os.unlink(fn)
-    f=open(fn,"wb+")
-    f.write("%d\n" % m)
-    fmt="%ds780B" % m
-    for w in self:
-      a=self[w].bits
-      s+=struct.pack(fmt,w.encode('utf8'),*a)
-    f.write(zlib.compress(s,9))
-    f.close()
 
-  def load(self, fn):
-    f=open(fn,"rb")
-    m=int(f.readline().strip())
-    fmt="%ds780B" % m
-    size=struct.calcsize(fmt)
-    s=zlib.decompress(f.read())
-    for i in range(0,len(s),size):
-      u=struct.unpack(fmt,s[i:i+size])
-      self[u[0].rstrip('\0').decode('utf8')]=searchIndexerItem(bits=u[1:])
+  def save(self):
+    c=self.cn.cursor()
+    c.execute('CREATE TABLE ix (w TEXT PRIMARY KEY NOT NULL, i BLOB)')
+    for w in self.d:
+      c.execute( 'INSERT INTO ix VALUES(?,?)', (w, sqlite3.Binary(array.array("H", self.d[w].toAyaIdList()).tostring()),) )
+    self.cn.commit()
+
+  def _itemFactory(self, r):
+    a=array.array("H")
+    a.fromstring(r[1])
+    return r[0], searchIndexerItem(a)
+
+  def _itemFactory2(self, r):
+    a=array.array("H")
+    a.fromstring(r[1])
+    return searchIndexerItem(a)
+
+  def get(self, w):
+    r=self.cn.execute('SELECT w, i FROM ix WHERE w=?', (w,)).fetchone()
+    if not r: return None, None
+    return self._itemFactory(r)
+
+  def getPartial(self, w, withWords=False):
+    if "%" in w or "_" in w: return [] # special chars
+    W="%"+w+"%"
+    f=withWords and self._itemFactory or self._itemFactory2
+    r=self.cn.execute('SELECT w, i FROM ix WHERE w LIKE ?', (W, ))
+    if not r: return []
+    return imap(lambda i: f(i), r)
 
   def find(self, words):
     if not words: return None
     w=self.normalize(words[0])
-    x=self.get(w,None)
+    W,x=self.get(w)
     if not x: return None
     for w in words[1:]:
-      y=self.get(self.normalize(w),None)
+      W,y=self.get(self.normalize(w))
       if not y: return None
       x&=y
     return x.toAyaIdList()
-  
+
+  def findPartial(self, words):
+    if not words: return None
+    w=self.normalize(words[0])
+    x=reduce( lambda a,b: a|b, self.getPartial(w), searchIndexerItem() )
+    for W in words[1:]:
+      w=self.normalize(W)
+      y=reduce( lambda a,b: a|b, self.getPartial(w), searchIndexerItem() )
+      x&=y
+    return x.toAyaIdList()
+
   def addWord(self, word, ayaId):
     w=self.normalize(word)
+    #if not w: print word; return
     self.maxWordLen=max(self.maxWordLen,len(w))
-    if self.has_key(w):
-      self[w].setAyaId(ayaId)
+    if self.d.has_key(w):
+      self.d[w].add(ayaId)
     else:
-      self[w]=searchIndexerItem(ayaId)
+      self.d[w]=searchIndexerItem(ayaId)
 
 
