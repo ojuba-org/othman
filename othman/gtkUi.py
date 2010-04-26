@@ -24,13 +24,75 @@ import pango
 import glib
 import gtk
 
-from core import othmanCore
+from core import othmanCore, searchIndexer
+
+class searchWindow(gtk.Window):
+  def __init__(self, w):
+    gtk.Window.__init__(self)
+    self.w=w
+    self.connect('delete-event', lambda w,*a: self.hide() or True)
+    self.last_txt = None
+    self.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_DIALOG)
+    self.set_modal(True)
+    self.set_title(_('Search results'))
+    self.set_transient_for(w)
+    vb=gtk.VBox(False,0); self.add(vb)
+    self.search=gtk.Entry()
+    self.search.set_width_chars(15)
+    vb.pack_start(self.search, False,False, 0)
+    self.scroll=gtk.ScrolledWindow()
+    self.scroll.set_policy(gtk.POLICY_NEVER,gtk.POLICY_ALWAYS)
+    vb.pack_start(self.scroll,True, True, 6)
+    
+    self.ls = gtk.ListStore(int,str,int,int)
+    self.cells=[]; self.cols=[]
+    self.cells.append(gtk.CellRendererText())
+    self.cols.append(gtk.TreeViewColumn(_('Sura'), self.cells[0], text=1))
+    self.cols[0].set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+    self.cols[0].set_resizable(True)
+
+    self.cells.append(gtk.CellRendererText()); # self.cols[-1].set_expand(False)
+    self.ls_w=gtk.TreeView(self.ls)
+    self.ls_w.connect("cursor-changed", self.move)
+    self.ls_w.set_headers_visible(False)
+    for i in self.cols: self.ls_w.insert_column(i, -1)
+    self.scroll.add(self.ls_w)
+    self.show_all()
+
+  def move(self, t):
+    a=self.ls_w.get_selection().get_selected()
+    if not a: return
+    sa=self.ls[self.ls.get_path(a[1])[0]]
+    self.w.sura_c.set_active(sa[2]-1)
+    self.w.viewAya(sa[3], sa[2])
+
+  def find(self, txt, backward=False):
+    txt=txt.strip()
+    if not txt: self.hide(); return
+    if type(txt)==str: txt=txt.decode('utf-8')
+    if txt==self.last_txt:
+      # TODO: just move cursor to next/prev result before showing it
+      pass
+    else:
+      self.search.set_text(txt)
+      self.last_txt=txt
+      self.ls.clear()
+      for i in self.w.ix.findPartial(txt.split()):
+        sura,aya=self.w.suraAyaFromAyaId(i)
+        name=self.w.suraInfoById[sura-1][0]
+        self.ls.append([i, "%03d %s - %03d" % (sura, name, aya), sura, aya,])
+      self.ls_w.set_cursor((0,))
+    self.show_all()
 
 class othmanUi(gtk.Window, othmanCore):
   def __init__(self):
     gtk.window_set_default_icon_name('othman')
     gtk.Window.__init__(self)
     othmanCore.__init__(self)
+    self.sw = None
+    self.lastSearchText=None
+    self.lastSearchResult=[]
+    self.ix=searchIndexer()
     self.set_title(_('Othman Quran Browser'))
     self.connect("delete_event", self.quit)
     self.set_default_size(600, 480)
@@ -91,11 +153,11 @@ class othmanUi(gtk.Window, othmanCore):
 
     hb.pack_start(gtk.VSeparator(), False, False, 6)
     hb.pack_start(gtk.image_new_from_stock(gtk.STOCK_FIND, gtk.ICON_SIZE_BUTTON), False, False, 0)
-    inc_search=gtk.Entry(); inc_search.set_width_chars(15)
-    hb.pack_start(inc_search, False,False, 0)
+    search=gtk.Entry(); search.set_width_chars(15)
+    hb.pack_start(search, False,False, 0)
     self.inc_is_backword=gtk.CheckButton(_("backword search"))
     hb.pack_start(self.inc_is_backword, False, False, 0)
-    #inc_search.connect("activate", self.inc_search_cb)
+    search.connect("activate", self.search_cb)
     self.scale=1
     self.txt = gtk.ListStore(str,int,str)
     self.cells=[]; self.cols=[]
@@ -120,6 +182,10 @@ class othmanUi(gtk.Window, othmanCore):
     self.sura_c.set_active(0)
     self.build_cp_dlg()
     self.show_all()
+
+  def search_cb(self, b, *a):
+    if not self.sw: self.sw = searchWindow(self)
+    self.sw.find(b.get_text())
 
   def autoScroll(self, b):
     if not self.autoScrolling: return True
@@ -158,7 +224,6 @@ class othmanUi(gtk.Window, othmanCore):
     i=aya+int(self.showSunnahBasmala(sura))
     self.txt_list.scroll_to_cell((i-1,))
     self.txt_list.get_selection().select_path((i-1,))
-
 
   def viewSura(self, i):
     #self.play_pause.set_active(False)

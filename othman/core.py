@@ -38,6 +38,34 @@ def guessDataDir():
   d=os.path.join(f, '..', 'share', 'othman')
   return d
 
+def cmp_bisect_right(ccmp, a, x, lo=0, hi=None):
+    """
+    same as bisect.bisect but uses custom cmp function
+    """
+    if lo < 0:
+        raise ValueError('lo must be non-negative')
+    if hi is None:
+        hi = len(a)
+    while lo < hi:
+        mid = (lo+hi)>>1
+        if ccmp(a[mid],x)>0: hi = mid # ie. if x < a[mid]
+        else: lo = mid+1
+    return lo
+def cmp_bisect_left(ccmp, a, x, lo=0, hi=None):
+    """
+    same as bisect.bisect_left but uses custom cmp function
+    """
+    if lo < 0:
+        raise ValueError('lo must be non-negative')
+    if hi is None:
+        hi = len(a)
+    while lo < hi:
+        mid = (lo+hi)>>1
+        if ccmp(x, a[mid])>0: lo = mid+1 # ie. if a[mid] < x
+        else: hi = mid
+    return lo
+
+
 class othmanCore:
   SQL_GET_AYAT='SELECT othmani, imlai FROM Quran WHERE id>=? ORDER BY id LIMIT ?'
   SQL_GET_SURA_INFO='SELECT rowid, sura_name, other_names, makki, starting_row, comment FROM SuraInfo ORDER BY rowid'
@@ -58,6 +86,11 @@ class othmanCore:
 
   def showSunnahBasmala(self, sura):
     return sura!=1 and sura!=9
+
+  def suraAyaFromAyaId(self, ayaId):
+    sura=cmp_bisect_right(lambda i,j: cmp(i[3], j), self.suraInfoById, ayaId)
+    aya=ayaId-self.suraInfoById[sura-1][3]+1
+    return sura,aya
 
   def ayaIdFromSuraAya(self, suraId, aya=1):
     """
@@ -172,6 +205,6 @@ class searchIndexer:
     if self.d.has_key(w):
       self.d[w].add(ayaId)
     else:
-      self.d[w]=searchIndexerItem(ayaId)
+      self.d[w]=searchIndexerItem((ayaId,))
 
 
