@@ -3,11 +3,6 @@ import sys, os
 from distutils.core import setup
 from glob import glob
 
-if 'clean' in sys.argv:
-  try: os.unlink('othman-data/ix.db')
-  except OSError: pass
-else: os.system("%s gen-index.py" % sys.executable)
-
 # to install type: 
 # python setup.py install --root=/
 setup (name='Othman', version='3',

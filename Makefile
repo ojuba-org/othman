@@ -4,7 +4,11 @@ INSTALL=install
 SOURCES=$(wildcard *.desktop.in)
 TARGETS=${SOURCES:.in=}
 
-all: $(TARGETS)
+all: $(TARGETS) othman-data/ix.db
+
+othman-data/ix.db: othman-data/quran.db
+	rm othman-data/ix.db || :
+	python gen-index.py
 
 pos:
 	make -C po all
