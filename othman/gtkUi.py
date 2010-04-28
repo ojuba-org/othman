@@ -155,8 +155,8 @@ class othmanUi(gtk.Window, othmanCore):
     hb.pack_start(gtk.image_new_from_stock(gtk.STOCK_FIND, gtk.ICON_SIZE_BUTTON), False, False, 0)
     search=gtk.Entry(); search.set_width_chars(15)
     hb.pack_start(search, False,False, 0)
-    self.inc_is_backword=gtk.CheckButton(_("backword search"))
-    hb.pack_start(self.inc_is_backword, False, False, 0)
+    self.inc_is_backward=gtk.CheckButton(_("backward search"))
+    hb.pack_start(self.inc_is_backward, False, False, 0)
     search.connect("activate", self.search_cb)
     self.scale=1
     self.txt = gtk.ListStore(str,int,str)
@@ -284,8 +284,8 @@ class othmanUi(gtk.Window, othmanCore):
     
     self.cp_from=gtk.SpinButton()
     self.cp_to=gtk.SpinButton()
-    self.cp_is_imlai=gtk.CheckButton("بالرسم الإملائي")
-    self.cp_aya_perline=gtk.CheckButton("كل آية على سطر")
+    self.cp_is_imlai=gtk.CheckButton(_("Imla'i style"))
+    self.cp_aya_perline=gtk.CheckButton(_("an Aya per line"))
     self.cp_ok=gtk.Button(stock=gtk.STOCK_OK)
     self.cp_cancel=gtk.Button(stock=gtk.STOCK_CANCEL)
     vb=gtk.VBox(False,0)
