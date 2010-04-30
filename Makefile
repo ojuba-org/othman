@@ -1,5 +1,5 @@
-DESTDIR?=/usr
-datadir?=$(DESTDIR)/share
+DESTDIR?=/
+datadir?=$(DESTDIR)/usr/share
 INSTALL=install
 
 SOURCES=$(wildcard *.desktop.in)
