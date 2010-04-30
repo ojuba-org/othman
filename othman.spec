@@ -29,12 +29,6 @@ make %{?_smp_mflags}
 %install
 rm -rf $RPM_BUILD_ROOT
 %makeinstall
-# TODO: move to makefile
-for i in 96 72 64 48 36 32 24 22 16
-do
-  convert -background none -resize ${i}x${i} Othman-128.png Othman-${i}.png
-  install -p -m 644 -D othman-${i}.png $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${i}x${i}/apps/Othman.png
-done
 
 %post
 touch --no-create %{_datadir}/icons/hicolor || :
