@@ -29,7 +29,7 @@ def guessDataDir():
     f=os.path.abspath(os.path.dirname(__file__))
     d=os.path.join(f, '..', 'othman-data')
     if os.path.exists(d): return d
-    d=(f,'..', '..', '..', '..', 'share', 'othman')
+    d=os.path.join(f,'..', '..', '..', '..', 'share', 'othman')
     if os.path.exists(d): return d
   # we are in py2exe or DATA can't be located relative to __FILE__
   f=os.path.abspath(os.path.dirname(sys.argv[0]))
