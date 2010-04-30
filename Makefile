@@ -32,7 +32,7 @@ install: all
 	intltool-merge -d po $< $@
 
 clean:
-	rm -f $(TARGETS)
+	rm -f $(TARGETS) othman-data/ix.db
 	for i in 96 72 64 48 36 32 24 22 16; do \
 		rm -f Othman-$${i}.png; \
 	done
