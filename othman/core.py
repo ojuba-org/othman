@@ -26,17 +26,17 @@ from itertools import imap
 def guessDataDir():
   if not hasattr(sys, "frozen"):
     # we are not in py2exe
-    f=os.path.abspath(os.path.dirname(__file__))
+    f=os.path.abspath(os.path.realpath(os.path.dirname(__file__)))
     d=os.path.join(f, '..', 'othman-data')
-    if os.path.exists(d): return d
+    if os.path.exists(d): return os.path.abspath(os.path.realpath(d))
     d=os.path.join(f,'..', '..', '..', '..', 'share', 'othman')
-    if os.path.exists(d): return d
+    if os.path.exists(d): return os.path.abspath(os.path.realpath(d))
   # we are in py2exe or DATA can't be located relative to __FILE__
-  f=os.path.abspath(os.path.dirname(sys.argv[0]))
+  f=os.path.abspath(os.path.realpath(os.path.dirname(sys.argv[0])))
   d=os.path.join(f, 'othman-data')
-  if os.path.exists(d): return d
+  if os.path.exists(d): return os.path.abspath(os.path.realpath(d))
   d=os.path.join(f, '..', 'share', 'othman')
-  return d
+  return os.path.abspath(os.path.realpath(d))
 
 def cmp_bisect_right(ccmp, a, x, lo=0, hi=None):
     """
@@ -85,7 +85,6 @@ class othmanCore:
     self.basmala=self.basmala[:self.basmala.rfind(' ')]
     self.ix=None
     if load_ix: self.ix=searchIndexer()
-    
 
   def showSunnahBasmala(self, sura):
     return sura!=1 and sura!=9
@@ -143,7 +142,7 @@ class searchIndexerItem(set):
 class searchIndexer:
   def __init__(self, unlink=False, normalize=normalize):
     d=guessDataDir()
-    fn=os.path.join(os.path.abspath(d), "ix.db")
+    fn=os.path.join(d, "ix.db")
     if unlink and os.path.exists(fn): os.unlink(fn)
     self.cn=sqlite3.connect(fn)
     self.d={}
