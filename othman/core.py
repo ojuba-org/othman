@@ -69,7 +69,7 @@ def cmp_bisect_left(ccmp, a, x, lo=0, hi=None):
 class othmanCore:
   SQL_GET_AYAT='SELECT othmani, imlai FROM Quran WHERE id>=? ORDER BY id LIMIT ?'
   SQL_GET_SURA_INFO='SELECT rowid, sura_name, other_names, makki, starting_row, comment FROM SuraInfo ORDER BY rowid'
-  def __init__(self):
+  def __init__(self, load_ix=True):
     d=guessDataDir()
     db_fn=os.path.join(d,'quran.db')
     self.cn=sqlite3.connect(db_fn)
@@ -83,6 +83,9 @@ class othmanCore:
     self.suraInfoById[-1][5]=6
     self.basmala, self.basmala_imlai=list(self.getAyatIter(1))[0]
     self.basmala=self.basmala[:self.basmala.rfind(' ')]
+    self.ix=None
+    if load_ix: self.ix=searchIndexer()
+    
 
   def showSunnahBasmala(self, sura):
     return sura!=1 and sura!=9
