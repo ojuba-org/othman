@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: othman 0.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 18:29+0300\n"
+"POT-Creation-Date: 2010-05-02 20:27+0300\n"
 "PO-Revision-Date: 2010-04-28 18:31+0300\n"
 "Last-Translator: alsadi <alsadi@ojuba.org>\n"
 "Language-Team: thawab@ojuba.org\n"
@@ -34,22 +34,20 @@ msgstr "نتائج البحث"
 msgid "Sura"
 msgstr "سورة"
 
-#: ../othman/gtkUi.py:126 ../othman/gtkUi.py:283
+#: ../othman/gtkUi.py:126 ../othman/gtkUi.py:281
 msgid "choose a Sura"
 msgstr "اختر سورة"
 
-#: ../othman/gtkUi.py:158
-msgid "backward search"
-msgstr "بحث للوراء"
-
-#: ../othman/gtkUi.py:277
+#: ../othman/gtkUi.py:275
 msgid "Copy to clipboard"
 msgstr "نسخ إلى الحافظة"
 
-#: ../othman/gtkUi.py:287
+#: ../othman/gtkUi.py:285
 msgid "Imla'i style"
 msgstr "بالرسم الإملائي"
 
-#: ../othman/gtkUi.py:288
+#: ../othman/gtkUi.py:286
 msgid "an Aya per line"
 msgstr "كل آية على كل سطر مستقل"
+
+

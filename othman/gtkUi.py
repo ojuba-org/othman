@@ -155,8 +155,6 @@ class othmanUi(gtk.Window, othmanCore):
     hb.pack_start(gtk.image_new_from_stock(gtk.STOCK_FIND, gtk.ICON_SIZE_BUTTON), False, False, 0)
     search=gtk.Entry(); search.set_width_chars(15)
     hb.pack_start(search, False,False, 0)
-    self.inc_is_backward=gtk.CheckButton(_("backward search"))
-    hb.pack_start(self.inc_is_backward, False, False, 0)
     search.connect("activate", self.search_cb)
     self.scale=1
     self.txt = gtk.ListStore(str,int,str)
