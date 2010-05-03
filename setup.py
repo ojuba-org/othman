@@ -9,7 +9,7 @@ from glob import glob
 locales=map(lambda i: ('share/'+i,[''+i+'/othman.mo',]),glob('locale/*/LC_MESSAGES'))
 data_files=[('share/othman/',glob('othman-data/*'))]
 data_files.extend(locales)
-setup (name='Othman', version='3',
+setup (name='Othman', version='0.2.0',
       description='Othman Quran Browser',
       author='Muayyad Saleh Alsadi',
       author_email='alsadi@ojuba.org',
