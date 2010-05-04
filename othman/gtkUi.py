@@ -86,7 +86,7 @@ class searchWindow(gtk.Window):
 
 class othmanUi(gtk.Window, othmanCore):
   def __init__(self):
-    gtk.window_set_default_icon_name('othman')
+    gtk.window_set_default_icon_name('Othman')
     gtk.Window.__init__(self)
     othmanCore.__init__(self)
     self.sw = None
