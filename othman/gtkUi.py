@@ -30,7 +30,7 @@ class searchWindow(gtk.Window):
   def __init__(self, w):
     gtk.Window.__init__(self)
     self.w=w
-    self.connect('delete-event', lambda w,*a: self.hide() or True)
+    self.connect('delete-event', lambda w,*a: w.hide() or True)
     self.last_txt = None
     self.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_DIALOG)
     self.set_modal(True)
@@ -156,6 +156,16 @@ class othmanUi(gtk.Window, othmanCore):
     search=gtk.Entry(); search.set_width_chars(15)
     hb.pack_start(search, False,False, 0)
     search.connect("activate", self.search_cb)
+
+    hb.pack_start(gtk.VSeparator(),False, False, 6)
+    img=gtk.Image()
+    img.set_from_stock(gtk.STOCK_ABOUT, gtk.ICON_SIZE_BUTTON)
+    b=gtk.Button()
+    b.add(img)
+    hb.pack_start(b, False, False, 0)
+    b.connect("clicked", self.about)
+
+
     self.scale=1
     self.txt = gtk.ListStore(str,int,str)
     self.cells=[]; self.cols=[]
@@ -179,7 +189,45 @@ class othmanUi(gtk.Window, othmanCore):
     self.scroll.add(self.txt_list)
     self.sura_c.set_active(0)
     self.build_cp_dlg()
+    self.build_about_dlg()
     self.show_all()
+
+  def build_about_dlg(self):
+    self.about_w=gtk.AboutDialog()
+    self.about_w.set_default_response(gtk.RESPONSE_CLOSE)
+    self.about_w.connect('delete-event', lambda w,*a: w.hide() or True)
+    self.about_w.connect('response', lambda w,*a: w.hide() or True)
+    try: self.about_w.set_program_name("Othman")
+    except: pass
+    self.about_w.set_name(_('Othman Quran Browser'))
+    #self.about_w.set_version(version)
+    self.about_w.set_copyright("Copyright © 2008-2010 Muayyad Saleh Alsadi <alsadi@ojuba.org>")
+    self.about_w.set_comments(_("Electronic Mus-haf"))
+    self.about_w.set_license("""
+    Released under terms of Waqf Public License.
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the latest version Waqf Public License as
+    published by Ojuba.org.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+    The Latest version of the license can be found on
+    "http://waqf.ojuba.org/"
+
+""")
+    self.about_w.set_website("http://othman.ojuba.org/")
+    self.about_w.set_website_label("http://othman.ojuba.org")
+    self.about_w.set_authors(["Muayyad Saleh Alsadi <alsadi@ojuba.org>"])
+    self.about_w.set_translator_credits(_("translator-credits"))
+    fn=os.path.join(self.data_dir, "quran-kareem.svg")
+    logo=gtk.gdk.pixbuf_new_from_file_at_size(fn, 128, 128)
+    self.about_w.set_logo(logo)
+
+
+  def about(self, b):
+    self.about_w.show_all()
 
   def search_cb(self, b, *a):
     if not self.sw: self.sw = searchWindow(self)

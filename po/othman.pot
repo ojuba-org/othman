@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-02 20:27+0300\n"
+"POT-Creation-Date: 2010-05-04 17:44+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../Othman.desktop.in.h:1
+#: ../Othman.desktop.in.h:1 ../othman/gtkUi.py:205
 msgid "Electronic Mus-haf"
 msgstr ""
 
-#: ../Othman.desktop.in.h:2 ../othman/gtkUi.py:96
+#: ../Othman.desktop.in.h:2 ../othman/gtkUi.py:96 ../othman/gtkUi.py:202
 msgid "Othman Quran Browser"
 msgstr ""
 
@@ -32,18 +32,22 @@ msgstr ""
 msgid "Sura"
 msgstr ""
 
-#: ../othman/gtkUi.py:126 ../othman/gtkUi.py:281
+#: ../othman/gtkUi.py:126 ../othman/gtkUi.py:327
 msgid "choose a Sura"
 msgstr ""
 
-#: ../othman/gtkUi.py:275
+#: ../othman/gtkUi.py:223
+msgid "translator-credits"
+msgstr ""
+
+#: ../othman/gtkUi.py:321
 msgid "Copy to clipboard"
 msgstr ""
 
-#: ../othman/gtkUi.py:285
+#: ../othman/gtkUi.py:331
 msgid "Imla'i style"
 msgstr ""
 
-#: ../othman/gtkUi.py:286
+#: ../othman/gtkUi.py:332
 msgid "an Aya per line"
 msgstr ""

@@ -24,20 +24,25 @@ import array
 from itertools import imap
 import threading
 
+data_dir=None
+
 def guessDataDir():
+  global data_dir
+  if data_dir: return data_dir
   if not hasattr(sys, "frozen"):
     # we are not in py2exe
     f=os.path.abspath(os.path.realpath(os.path.dirname(__file__)))
     d=os.path.join(f, '..', 'othman-data')
-    if os.path.exists(d): return os.path.abspath(os.path.realpath(d))
+    if os.path.exists(d): data_dir=os.path.abspath(os.path.realpath(d)); return data_dir
     d=os.path.join(f,'..', '..', '..', '..', 'share', 'othman')
-    if os.path.exists(d): return os.path.abspath(os.path.realpath(d))
+    if os.path.exists(d): data_dir=os.path.abspath(os.path.realpath(d)); return data_dir
   # we are in py2exe or DATA can't be located relative to __FILE__
   f=os.path.abspath(os.path.realpath(os.path.dirname(sys.argv[0])))
   d=os.path.join(f, 'othman-data')
-  if os.path.exists(d): return os.path.abspath(os.path.realpath(d))
+  if os.path.exists(d): data_dir=os.path.abspath(os.path.realpath(d)); return data_dir
   d=os.path.join(f, '..', 'share', 'othman')
-  return os.path.abspath(os.path.realpath(d))
+  data_dir=os.path.abspath(os.path.realpath(d))
+  return data_dir
 
 def cmp_bisect_right(ccmp, a, x, lo=0, hi=None):
     """
@@ -71,7 +76,7 @@ class othmanCore:
   SQL_GET_AYAT='SELECT othmani, imlai FROM Quran WHERE id>=? ORDER BY id LIMIT ?'
   SQL_GET_SURA_INFO='SELECT rowid, sura_name, other_names, makki, starting_row, comment FROM SuraInfo ORDER BY rowid'
   def __init__(self, load_ix=True):
-    d=guessDataDir()
+    self.data_dir = d = guessDataDir()
     self.db_fn = db_fn=os.path.join(d,'quran.db')
     self._cn = {}
     cn=self._getConnection()

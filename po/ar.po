@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: othman 0.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-02 20:27+0300\n"
+"POT-Creation-Date: 2010-05-04 17:44+0300\n"
 "PO-Revision-Date: 2010-04-28 18:31+0300\n"
 "Last-Translator: alsadi <alsadi@ojuba.org>\n"
 "Language-Team: thawab@ojuba.org\n"
@@ -18,11 +18,11 @@ msgstr ""
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 "X-Generator: Virtaal 0.5.0\n"
 
-#: ../Othman.desktop.in.h:1
+#: ../Othman.desktop.in.h:1 ../othman/gtkUi.py:205
 msgid "Electronic Mus-haf"
 msgstr "المصحف الإلكتروني"
 
-#: ../Othman.desktop.in.h:2 ../othman/gtkUi.py:96
+#: ../Othman.desktop.in.h:2 ../othman/gtkUi.py:96 ../othman/gtkUi.py:202
 msgid "Othman Quran Browser"
 msgstr "مصحف عثمان الإلكتروني"
 
@@ -34,20 +34,22 @@ msgstr "نتائج البحث"
 msgid "Sura"
 msgstr "سورة"
 
-#: ../othman/gtkUi.py:126 ../othman/gtkUi.py:281
+#: ../othman/gtkUi.py:126 ../othman/gtkUi.py:327
 msgid "choose a Sura"
 msgstr "اختر سورة"
 
-#: ../othman/gtkUi.py:275
+#: ../othman/gtkUi.py:223
+msgid "translator-credits"
+msgstr "مؤيد صالح السعدي <alsadi@ojuba.org>"
+
+#: ../othman/gtkUi.py:321
 msgid "Copy to clipboard"
 msgstr "نسخ إلى الحافظة"
 
-#: ../othman/gtkUi.py:285
+#: ../othman/gtkUi.py:331
 msgid "Imla'i style"
 msgstr "بالرسم الإملائي"
 
-#: ../othman/gtkUi.py:286
+#: ../othman/gtkUi.py:332
 msgid "an Aya per line"
 msgstr "كل آية على كل سطر مستقل"
-
-
