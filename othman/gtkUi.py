@@ -222,7 +222,10 @@ class othmanUi(gtk.Window, othmanCore):
     self.about_w.set_authors(["Muayyad Saleh Alsadi <alsadi@ojuba.org>"])
     self.about_w.set_translator_credits(_("translator-credits"))
     fn=os.path.join(self.data_dir, "quran-kareem.svg")
-    logo=gtk.gdk.pixbuf_new_from_file_at_size(fn, 128, 128)
+    try: logo=gtk.gdk.pixbuf_new_from_file_at_size(fn, 128, 128)
+    except:
+      fn=os.path.join(self.data_dir, "quran-kareem.png")
+      logo=gtk.gdk.pixbuf_new_from_file(fn)
     self.about_w.set_logo(logo)
 
 

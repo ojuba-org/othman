@@ -20,6 +20,7 @@ pos:
 	make -C po all
 
 install: all
+	rm othman-data/quran-kareem.png || :
 	python setup.py install -O2 --root $(DESTDIR)
 	$(INSTALL) -d $(datadir)/applications/
 	$(INSTALL) -m 0644 Othman.desktop $(datadir)/applications/

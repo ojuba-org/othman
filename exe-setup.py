@@ -6,13 +6,13 @@ from glob import glob
 import py2exe
 
 # to create exe type:
-# python exe-setup.py py2exe
+# python exe-setup.py py2exe -O2
 
 # NOTE: before you use this tool you should run make to generate index and locale files
 
 
 locales=map(lambda i: ('locale/'+i,[''+i+'/othman.mo',]),glob('locale/*/LC_MESSAGES'))
-data_files=[('othman-data',glob('othman-data/*'))]
+data_files=[('othman-data',glob('othman-data/*')), ('.', ['COPYING']+glob('LICENSE*')+glob('README*'))]
 data_files.extend(locales)
 
 setup (name='Othman', version='0.2.0',
