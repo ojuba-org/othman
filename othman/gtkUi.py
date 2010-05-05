@@ -331,8 +331,8 @@ class othmanUi(gtk.Window, othmanCore):
     for i in self.sura_ls: self.cp_sura.append_text(i)
     self.cp_sura.set_tooltip_text(_("choose a Sura"))
     
-    self.cp_from=gtk.SpinButton()
-    self.cp_to=gtk.SpinButton()
+    self.cp_from=gtk.SpinButton(gtk.Adjustment(0, 0, 286, 1, 10, 0))
+    self.cp_to=gtk.SpinButton(gtk.Adjustment(0, 0, 286, 1, 10, 0))
     self.cp_is_imlai=gtk.CheckButton(_("Imla'i style"))
     self.cp_aya_perline=gtk.CheckButton(_("an Aya per line"))
     self.cp_ok=gtk.Button(stock=gtk.STOCK_OK)
