@@ -298,7 +298,7 @@ class othmanUi(gtk.Window, othmanCore):
     aya2=self.cp_to.get_value()
     n=aya2-aya1+1
     i=self.cp_is_imlai.get_active()
-    a=['','\n',' * ', ' *\n']
+    a=[' ','\n',' * ', ' *\n']
     s=a[int(i)*2+int(self.cp_aya_perline.get_active())]
     s=s.join([l[i] for l in self.getSuraIter(sura, n, aya1)])+'\n'
     self.clip1.set_text(s)
