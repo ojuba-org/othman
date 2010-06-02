@@ -1,14 +1,17 @@
 POTFILE=$(shell cat POTFILES.in)
 SOURCES=$(addprefix ../, $(POTFILE))
-
-all: $(wildcard *.po)
+POFILES=$(wildcard *.po)
+MOFILES=$(patsubst %.po,%.mo,$(POFILES))
+all: $(MOFILES)
 
 othman.pot: $(SOURCES)
 	intltool-update -g othman -p
 
+%.mo: %.po
+	msgfmt $*.po -o $*.mo
+	mkdir -p ../locale/$*/LC_MESSAGES/ || :
+	cp $*.po ../locale/$*/LC_MESSAGES/othman.mo
+
 %.po: othman.pot
 	intltool-update -g othman -d $*
-	mkdir -p ../locale/$*/LC_MESSAGES/ || :
-	msgfmt $*.po -o ../locale/$*/LC_MESSAGES/othman.mo
-
 

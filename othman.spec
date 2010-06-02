@@ -1,5 +1,5 @@
 Name:		othman
-Version:	0.2.1
+Version:	0.2.2
 Release:	1%{?dist}
 Summary:	Othman Electronic Quran Browser
 # sitelib for noarch packages, sitearch for others (remove the unneeded one)
@@ -28,7 +28,7 @@ make %{?_smp_mflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%makeinstall
+%makeinstall DESTDIR=$RPM_BUILD_ROOT
 
 %post
 touch --no-create %{_datadir}/icons/hicolor || :
@@ -68,6 +68,7 @@ a python package that provides access to Quranic text with a fast search index
 %doc LICENSE-en LICENSE-ar.txt README README-ar.txt COPYING
 %dir %{python_sitelib}/othman
 %dir %{_datadir}/othman
+%{python_sitelib}/*.egg-info
 %{python_sitelib}/othman/core.p*
 %{python_sitelib}/othman/__init__.p*
 %{_datadir}/othman/*
