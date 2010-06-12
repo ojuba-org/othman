@@ -10,7 +10,7 @@ othman.pot: $(SOURCES)
 %.mo: %.po
 	msgfmt $*.po -o $*.mo
 	mkdir -p ../locale/$*/LC_MESSAGES/ || :
-	cp $*.po ../locale/$*/LC_MESSAGES/othman.mo
+	cp $*.mo ../locale/$*/LC_MESSAGES/othman.mo
 
 %.po: othman.pot
 	intltool-update -g othman -d $*

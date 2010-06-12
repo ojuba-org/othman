@@ -1,5 +1,5 @@
 Name:		othman
-Version:	0.2.2
+Version:	0.2.3
 Release:	1%{?dist}
 Summary:	Othman Electronic Quran Browser
 # sitelib for noarch packages, sitearch for others (remove the unneeded one)
@@ -74,6 +74,9 @@ a python package that provides access to Quranic text with a fast search index
 %{_datadir}/othman/*
 
 %changelog
+* Sat Jun 12 2010  Muayyad Saleh AlSadi <alsadi@ojuba.org> - 0.2.3-1
+- update to new version
+
 * Wed Apr 28 2010 Muayyad Saleh Alsadi <alsadi@ojuba.org> - 0.2.0-1
 - initial release
 

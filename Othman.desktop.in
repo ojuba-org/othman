@@ -6,6 +6,6 @@ Terminal=false
 TryExec=othman-browser
 Exec=othman-browser
 Icon=Othman
-Categories=Education;Literature;Science;X-Islamic-Software;X-Quran;GTK;
+Categories=X-Islamic-Software;X-Quran;GTK;
 StartupNotify=false
 
