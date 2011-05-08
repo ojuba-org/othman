@@ -23,6 +23,7 @@ import sqlite3
 import array
 from itertools import imap
 import threading
+import varuints
 
 data_dir=None
 
@@ -163,6 +164,8 @@ class searchIndexer:
     self.d={}
     self.normalize=normalize
     self.maxWordLen=0
+    self.term_vectors_size=0
+    self.terms_count=0
 
   def _getConnection(self):
     n = threading.current_thread().name
@@ -178,17 +181,18 @@ class searchIndexer:
     c=cn.cursor()
     c.execute('CREATE TABLE ix (w TEXT PRIMARY KEY NOT NULL, i BLOB)')
     for w in self.d:
-      c.execute( 'INSERT INTO ix VALUES(?,?)', (w, sqlite3.Binary(array.array("H", self.d[w].toAyaIdList()).tostring()),) )
+      b=varuints.incremetal_encode(self.d[w].toAyaIdList())
+      self.term_vectors_size+=len(b)
+      c.execute( 'INSERT INTO ix VALUES(?,?)', (w, sqlite3.Binary(b)) )
+    self.terms_count=len(self.d.keys())
     cn.commit()
 
   def _itemFactory(self, r):
-    a=array.array("H")
-    a.fromstring(r[1])
+    a=varuints.incremetal_decode(r[1])
     return r[0], searchIndexerItem(a)
 
   def _itemFactory2(self, r):
-    a=array.array("H")
-    a.fromstring(r[1])
+    a=varuints.incremetal_decode(r[1])
     return searchIndexerItem(a)
 
   def get(self, w):

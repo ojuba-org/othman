@@ -57,6 +57,7 @@ class searchWindow(gtk.Window):
     self.ls_w.set_headers_visible(False)
     for i in self.cols: self.ls_w.insert_column(i, -1)
     self.scroll.add(self.ls_w)
+    self.search.connect("activate", self.search_cb)
     self.show_all()
 
   def move(self, t):
@@ -65,6 +66,11 @@ class searchWindow(gtk.Window):
     sa=self.ls[self.ls.get_path(a[1])[0]]
     self.w.sura_c.set_active(sa[2]-1)
     self.w.viewAya(sa[3], sa[2])
+
+  def search_cb(self, b, *a):
+    t=b.get_text()
+    self.w.search.set_text(t)
+    self.find(t)
 
   def find(self, txt, backward=False):
     txt=txt.strip()
@@ -156,6 +162,7 @@ class othmanUi(gtk.Window, othmanCore):
     search=gtk.Entry(); search.set_width_chars(15)
     hb.pack_start(search, False,False, 0)
     search.connect("activate", self.search_cb)
+    self.search=search
 
     hb.pack_start(gtk.VSeparator(),False, False, 6)
     img=gtk.Image()
@@ -177,7 +184,8 @@ class othmanUi(gtk.Window, othmanCore):
     #self.cells[0].set_property("alignment",pango.ALIGN_CENTER)
     self.cells[0].set_property("wrap-mode",pango.WRAP_WORD_CHAR)
     self.cells[0].set_property("wrap-width",500)
-    self.cells[0].set_property("font","Simplified Naskh 32")
+    #self.cells[0].set_property("font","Simplified Naskh 32")
+    self.cells[0].set_property("font","KFGQPC Uthmanic Script HAFS 32")
     self.cells[0].set_property("scale", self.scale)
     self.cols[0].set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
 
