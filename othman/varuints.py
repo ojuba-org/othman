@@ -62,12 +62,15 @@ def encode(a):
 
 def incremetal_encode_list(a, unique=1):
   last=0
+  if unique!=1 and unique!=0: raise ValueError
   for i in a:
+    if i<last+unique: raise ValueError
     yield i-last-unique
     last=i
 
 def incremetal_decode_list(a, unique=1):
   last=0
+  if unique!=1 and unique!=0: raise ValueError
   for i in a:
     j=i+last+unique
     yield j
