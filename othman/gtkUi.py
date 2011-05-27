@@ -62,7 +62,7 @@ class searchWindow(gtk.Window):
 
   def move(self, t):
     a=self.ls_w.get_selection().get_selected()
-    if not a: return
+    if not a or len(a)<2 or not a[1]: return
     sa=self.ls[self.ls.get_path(a[1])[0]]
     self.w.sura_c.set_active(sa[2]-1)
     self.w.viewAya(sa[3], sa[2])
