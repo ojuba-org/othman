@@ -181,18 +181,18 @@ class searchIndexer:
     c=cn.cursor()
     c.execute('CREATE TABLE ix (w TEXT PRIMARY KEY NOT NULL, i BLOB)')
     for w in self.d:
-      b=varuints.incremetal_encode(self.d[w].toAyaIdList())
+      b=varuints.incremental_encode(self.d[w].toAyaIdList())
       self.term_vectors_size+=len(b)
       c.execute( 'INSERT INTO ix VALUES(?,?)', (w, sqlite3.Binary(b)) )
     self.terms_count=len(self.d.keys())
     cn.commit()
 
   def _itemFactory(self, r):
-    a=varuints.incremetal_decode(r[1])
+    a=varuints.incremental_decode(r[1])
     return r[0], searchIndexerItem(a)
 
   def _itemFactory2(self, r):
-    a=varuints.incremetal_decode(r[1])
+    a=varuints.incremental_decode(r[1])
     return searchIndexerItem(a)
 
   def get(self, w):

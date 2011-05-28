@@ -92,31 +92,31 @@ def read_single(f):
   return read(f,1).next()
 
 
-def incremetal_encode_list(a, unique=1, last=0):
+def incremental_encode_list(a, unique=1, last=0):
   if unique!=1 and unique!=0: raise ValueError
   for i in a:
     if i<last+unique: raise ValueError
     yield i-last-unique
     last=i
 
-def incremetal_decode_list(a, unique=1, last=0):
+def incremental_decode_list(a, unique=1, last=0):
   if unique!=1 and unique!=0: raise ValueError
   for i in a:
     j=i+last+unique
     yield j
     last=j
  
-def incremetal_encode(a, unique=1, last=0):
-  return encode(incremetal_encode_list(a, unique, last))
+def incremental_encode(a, unique=1, last=0):
+  return encode(incremental_encode_list(a, unique, last))
 
-def incremetal_decode(s, unique=1, last=0):
-  return incremetal_decode_list(decode(s), unique, last)
+def incremental_decode(s, unique=1, last=0):
+  return incremental_decode_list(decode(s), unique, last)
 
-def incremetal_write(f, a, unique=1, last=0):
-  return write(f, incremetal_encode_list(a, unique, last))
+def incremental_write(f, a, unique=1, last=0):
+  return write(f, incremental_encode_list(a, unique, last))
 
-def incremetal_read(f, unique=1, limit=1, last=0):
-  return incremetal_decode_list(read(f, limit), unique, last)
+def incremental_read(f, unique=1, limit=1, last=0):
+  return incremental_decode_list(read(f, limit), unique, last)
 
 
 def decode_safe(s):
