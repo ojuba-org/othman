@@ -184,8 +184,8 @@ class othmanUi(gtk.Window, othmanCore):
     #self.cells[0].set_property("alignment",pango.ALIGN_CENTER)
     self.cells[0].set_property("wrap-mode",pango.WRAP_WORD_CHAR)
     self.cells[0].set_property("wrap-width",500)
-    #self.cells[0].set_property("font","Simplified Naskh 32")
-    self.cells[0].set_property("font","KFGQPC Uthmanic Script HAFS 32")
+    self.cells[0].set_property("font","Simplified Naskh 32")
+    #self.cells[0].set_property("font","KFGQPC Uthmanic Script HAFS 32")
     self.cells[0].set_property("scale", self.scale)
     self.cols[0].set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
 

@@ -53,6 +53,31 @@ def decode(s):
     v<<=7
   if v: raise ValueError
 
+def decode_single(s):
+  v=0
+  for c in s:
+    c=ord(c)
+    v+=(c&127)
+    if (c&128)==0: return v; v=0
+    else: v+=1
+    v<<=7
+  if v: raise ValueError
+
+
+def encode_single(i):
+  r=""
+  k=0
+  j,m=0,0
+  while(1):
+      r=chr(m|(i&127))+r
+      m=128
+      j+=1
+      i>>=7
+      if i==0: return r
+      i-=1
+  raise ValueError # never reached
+
+
 def encode(a):
   r=[]
   k=0
