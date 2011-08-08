@@ -32,8 +32,9 @@ class searchWindow(gtk.Window):
     self.w=w
     self.connect('delete-event', lambda w,*a: w.hide() or True)
     self.last_txt = None
-    self.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_DIALOG)
+    self.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_UTILITY)
     self.set_modal(True)
+    self.set_deletable(True)
     self.set_title(_('Search results'))
     self.set_transient_for(w)
     vb=gtk.VBox(False,0); self.add(vb)
