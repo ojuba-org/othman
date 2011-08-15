@@ -384,8 +384,8 @@ class othmanUi(gtk.Window, othmanCore):
 
 def main():
   exedir=os.path.dirname(sys.argv[0])
-  ld=os.path.join(exedir, 'locale')
-  if not os.path.exists(ld): ld=os.path.join(exedir,'..','share','locale')
+  ld=os.path.join(exedir,'..','share','locale')
+  if not os.path.exists(ld): ld=os.path.join(exedir, 'locale')
   gettext.install('othman', ld, unicode=0)
   w=othmanUi()
   gtk.main()
