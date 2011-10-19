@@ -1,5 +1,5 @@
 Name:		othman
-Version:	0.2.6
+Version:	0.2.7
 Release:	1%{?dist}
 Summary:	Othman Electronic Quran Browser
 # sitelib for noarch packages, sitearch for others (remove the unneeded one)
