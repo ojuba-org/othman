@@ -70,7 +70,7 @@ a python package that provides access to Quranic text with a fast search index
 %dir %{_datadir}/othman
 %{python2_sitelib}/*.egg-info
 %{python2_sitelib}/othman/core.p*
-%{python2_sitelib}/othman/varuints.p*
+%{python2_sitelib}/othman/*varuints.p*
 %{python2_sitelib}/othman/__init__.p*
 %{_datadir}/othman/*
 
