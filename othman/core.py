@@ -84,7 +84,7 @@ def cmp_bisect_left(ccmp, a, x, lo=0, hi=None):
     return lo
 
 
-class othmanCore:
+class othmanCore(object):
     SQL_GET_AYAT = 'SELECT othmani, imlai FROM Quran WHERE id>=? ORDER BY id LIMIT ?'
     SQL_GET_SURA_INFO = 'SELECT rowid, sura_name, other_names, makki, starting_row, comment FROM SuraInfo ORDER BY rowid'
     def __init__(self, load_ix=True):
