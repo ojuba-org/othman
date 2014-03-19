@@ -2,8 +2,8 @@
 %global commit #Write commit number here
 
 Name:		othman
-Version:	0.2.8
-Release:	2%{?dist}
+Version:	0.3
+Release:	1%{?dist}
 Summary:	Othman Electronic Quran Browser
 Group:		Applications/Productivity
 License:	WAQFv2
@@ -75,6 +75,9 @@ a python package that provides access to Quranic text with a fast search index
 %{_datadir}/othman/*
 
 %changelog
+* Mon Jun 4 2012 Mosaab Alzoubi <moceap@hotmail.com> - 0.3-1
+- New Relese
+
 * Mon Jun 4 2012 Mosaab Alzoubi <moceap@hotmail.com> - 0.2.8-2
 - General Revision.
 
