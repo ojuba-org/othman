@@ -3,7 +3,7 @@
 
 Name:		othman
 Version:	0.3
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	Othman Electronic Quran Browser
 Group:		Applications/Productivity
 License:	WAQFv2
@@ -75,6 +75,9 @@ a python package that provides access to Quranic text with a fast search index
 %{_datadir}/othman/*
 
 %changelog
+* Fri Mar 24 2014 Ehab El-Gedawy <ehabsas@gmail.com> - 0.3-2
+- change to amiri font
+
 * Mon Jun 4 2012 Mosaab Alzoubi <moceap@hotmail.com> - 0.3-1
 - New Relese
 
