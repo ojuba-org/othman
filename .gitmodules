@@ -1,0 +1,3 @@
+[submodule "othman-data/quran"]
+	path = othman-data/quran
+	url = https://bitbucket.org/khaledhosny/quran.git
