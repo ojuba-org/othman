@@ -16,6 +16,10 @@ othman-data/ix.db: othman-data/quran.db
 	rm othman-data/ix.db || :
 	python gen-index.py
 
+othman-data/quran.db: othman-data/quran.sql othman-data/update-othmani.sql
+	rm $@ || :
+	cat $^ | sqlite3 $@
+
 pos:
 	make -C po all
 
