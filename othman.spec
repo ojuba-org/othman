@@ -3,7 +3,7 @@
 
 Name:		othman
 Version:	0.3
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	Othman Electronic Quran Browser
 Group:		Applications/Productivity
 License:	WAQFv2
@@ -13,7 +13,8 @@ BuildArch:	noarch
 BuildRequires:	python
 BuildRequires:	python2-devel
 Requires:	islamic-menus
-Requires:	arabeyes-core-fonts
+Requires:	amiri-quran-fonts
+#Requires:	arabeyes-core-fonts
 Requires:	pygobject3 >= 3.0.2
 Requires:	python-othman
 
@@ -75,10 +76,13 @@ a python package that provides access to Quranic text with a fast search index
 %{_datadir}/othman/*
 
 %changelog
+* Tue Apr 8 2014 Mosaab Alzoubi <moceap@hotmail.com> - 0.3-3
+- Fix requires.
+
 * Fri Mar 24 2014 Ehab El-Gedawy <ehabsas@gmail.com> - 0.3-2
 - change to amiri font
 
-* Mon Jun 4 2012 Mosaab Alzoubi <moceap@hotmail.com> - 0.3-1
+* Wed Mar 19 2014 Mosaab Alzoubi <moceap@hotmail.com> - 0.3-1
 - New Relese
 
 * Mon Jun 4 2012 Mosaab Alzoubi <moceap@hotmail.com> - 0.2.8-2
