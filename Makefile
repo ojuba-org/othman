@@ -3,7 +3,7 @@ datadir?=$(DESTDIR)/usr/share
 INSTALL=install
 
 SOURCES=$(wildcard *.desktop.in)
-TARGETS=${SOURCES:.in=}
+TARGETS=${SOURCES:.in=} othman-data/quran.db
 
 all: $(TARGETS) icons othman-data/ix.db
 
