@@ -82,7 +82,7 @@ a python package that provides access to Quranic text with a fast search index
 * Tue Apr 8 2014 Mosaab Alzoubi <moceap@hotmail.com> - 0.3-3
 - Fix requires.
 
-* Fri Mar 24 2014 Ehab El-Gedawy <ehabsas@gmail.com> - 0.3-2
+* Mon Mar 24 2014 Ehab El-Gedawy <ehabsas@gmail.com> - 0.3-2
 - change to amiri font
 
 * Wed Mar 19 2014 Mosaab Alzoubi <moceap@hotmail.com> - 0.3-1
