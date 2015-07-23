@@ -3,9 +3,9 @@
 
 Name: othman
 Version: 0.4
-Release: 2%{?dist}
+Release: 3%{?dist}
 Summary: Electronic Quran Browser
-Summary(ar): مصحف إلكتروتي
+Summary(ar): مصحف إلكتروني
 License: WAQFv2
 URL: http://ojuba.org
 Source: https://github.com/%{owner}/%{name}/archive/%{commit}/%{name}-%{commit}.tar.gz
@@ -88,6 +88,9 @@ A python module that provides access to Quranic text with a fast search index
 %{_datadir}/othman/*
 
 %changelog
+* Thu Jul 23 2015 Mosaab Alzoubi <moceap@hotmail.com> - 0.4-3
+- Fix typo
+
 * Thu Jul 16 2015 Mosaab Alzoubi <moceap@hotmail.com> - 0.4-2
 - General clean
 - Add Arabic summary and description
