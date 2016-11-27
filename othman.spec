@@ -3,7 +3,7 @@
 
 Name: othman
 Version: 0.4
-Release: 3%{?dist}
+Release: 4%{?dist}
 Summary: Electronic Quran Browser
 Summary(ar): مصحف إلكتروني
 License: WAQFv2
@@ -13,8 +13,10 @@ BuildArch: noarch
 BuildRequires: python2-devel
 BuildRequires: ImageMagick
 BuildRequires: intltool
+BuildRequires: sqlite
 Requires: islamic-menus
 Requires: amiri-quran-fonts
+Requires: sqlite
 Requires: pygobject3 >= 3.0.2
 Requires: python-othman
 
@@ -88,6 +90,10 @@ A python module that provides access to Quranic text with a fast search index
 %{_datadir}/othman/*
 
 %changelog
+* Sat Nov 26 2016 Mosaab Alzoubi <moceap@hotmail.com> - 0.4-4
+- Rebuilt for Fedora 25
+- Add sqlite as BR and require
+
 * Thu Jul 23 2015 Mosaab Alzoubi <moceap@hotmail.com> - 0.4-3
 - Fix typo
 
