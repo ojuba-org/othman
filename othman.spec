@@ -1,16 +1,15 @@
 %global owner ojuba-org
-%global commit #Write commit number here
 
 Name: othman
-Version: 0.4
-Release: 4%{?dist}
+Version: 1.0
+Release: 1%{?dist}
 Summary: Electronic Quran Browser
 Summary(ar): مصحف إلكتروني
 License: WAQFv2
 URL: http://ojuba.org
-Source: https://github.com/%{owner}/%{name}/archive/%{commit}/%{name}-%{commit}.tar.gz
+Source: https://github.com/%{owner}/%{name}/archive/%{version}.tar.gz
 BuildArch: noarch
-BuildRequires: python2-devel
+BuildRequires: python3-devel
 BuildRequires: ImageMagick
 BuildRequires: intltool
 BuildRequires: sqlite
@@ -18,7 +17,7 @@ Requires: islamic-menus
 Requires: amiri-quran-fonts
 Requires: sqlite
 Requires: pygobject3 >= 3.0.2
-Requires: python-othman
+Requires: python3-othman
 
 %description
 Othman Electronic Quran Browser displays Quranic text in Othmani script style
@@ -36,13 +35,57 @@ Othman project features fast search, autoscrolling, copy Quranic text to clipboa
 التّلقائي و إمكانية نسخ النّص القرءاني .
 
 %prep
-%setup -q -n %{name}-%{commit}
+%setup -q -n %{name}
 
 %build
 make %{?_smp_mflags}
 
 %install
 %make_install
+
+
+
+
+# Register as an application to be visible in the software center
+#
+# NOTE: It would be *awesome* if this file was maintained by the upstream
+# project, translated and installed into the right place during `make install`.
+#
+# See http://www.freedesktop.org/software/appstream/docs/ for more details.
+#
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/appdata
+cat > $RPM_BUILD_ROOT%{_datadir}/appdata/%{name}.appdata.xml <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2017 Mosaab Alzoubi <moceap@hotmail.com> -->
+<!--
+EmailAddress: moceap@hotmail.com
+SentUpstream: 2017-1-8
+-->
+<application>
+  <id type="desktop">Othman.desktop</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <summary>Electronic Quran Browser</summary>
+  <summary xml:lang="ar">مصحف إلكتروني</summary>
+  <description>
+    <p>
+	Electronic Quran Browser
+    </p>
+  </description>
+  <description xml:lang="ar">
+    <p>
+	مصحف إلكتروني.
+    </p>
+  </description>
+  <url type="homepage">https://github.com/ojuba-org/%{name}</url>
+  <screenshots>
+    <screenshot type="default">http://ojuba.org/screenshots/%{name}.png</screenshot>
+  </screenshots>
+  <updatecontact>moceap@hotmail.com</updatecontact>
+</application>
+EOF
+
+
+
 
 %post
 touch --no-create %{_datadir}/icons/hicolor || :
@@ -56,32 +99,33 @@ if [ -x %{_bindir}/gtk-update-icon-cache ] ; then
 %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
 fi
 
-%package -n python-othman
+%package -n python3-othman
 Summary: Quranic text python module
 Summary(ar): وحدة بيثون للنّص القرءاني
 License: WAQFv2
 BuildArch: noarch
-Requires: python
+Requires: python3
 
-%description -n python-othman
+%description -n python3-othman
 A python module that provides access to Quranic text with a fast search index
 
-%description -n python-othman -l ar
+%description -n python3-othman -l ar
 وحدة بيثون تقدّم وصولًا كاملًا للنّص القرءاني مع إمكانية البحث ضمن فهرسة سريعة
 
 %files
 %license COPYING waqf2-ar.pdf
 %doc README README-ar.txt
 %{_bindir}/othman-browser
-%{python2_sitelib}/othman/gtkUi.p*
+%{python3_sitelib}/othman/gtkUi.p*
 %{_datadir}/applications/*.desktop
 %{_datadir}/locale/*/*/*.mo
 %{_datadir}/icons/hicolor/*/apps/*.png
+%{_datadir}/appdata/%{name}.appdata.xml
 
-%files -n python-othman
+%files -n python3-othman
 %license COPYING waqf2-ar.pdf
 %doc README README-ar.txt
-%dir %{python2_sitelib}/othman
+%dir %{python3_sitelib}/othman
 %dir %{_datadir}/othman
 %{python2_sitelib}/*.egg-info
 %{python2_sitelib}/othman/core.p*
@@ -90,6 +134,12 @@ A python module that provides access to Quranic text with a fast search index
 %{_datadir}/othman/*
 
 %changelog
+* Sun Jan 8 2017 Mosaab Alzoubi <moceap@hotmail.com> - 1.0-1
+- Update to 1.0
+- Use Python3
+- New way to get Github upstream
+- Add appdata
+
 * Sat Nov 26 2016 Mosaab Alzoubi <moceap@hotmail.com> - 0.4-4
 - Rebuilt for Fedora 25
 - Add sqlite as BR and require
