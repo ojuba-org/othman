@@ -35,7 +35,7 @@ Othman project features fast search, autoscrolling, copy Quranic text to clipboa
 التّلقائي و إمكانية نسخ النّص القرءاني .
 
 %prep
-%setup -q -n %{name}
+%autosetup -n %{name}-%{version}
 
 %build
 make %{?_smp_mflags}
