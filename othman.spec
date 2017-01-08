@@ -1,15 +1,15 @@
 %global owner ojuba-org
 
 Name: othman
-Version: 1.0
+Version: 0.5
 Release: 1%{?dist}
 Summary: Electronic Quran Browser
 Summary(ar): مصحف إلكتروني
 License: WAQFv2
 URL: http://ojuba.org
-Source: https://github.com/%{owner}/%{name}/archive/%{version}.tar.gz
+Source: https://github.com/%{owner}/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 BuildArch: noarch
-BuildRequires: python3-devel
+BuildRequires: python-devel
 BuildRequires: ImageMagick
 BuildRequires: intltool
 BuildRequires: sqlite
@@ -17,7 +17,7 @@ Requires: islamic-menus
 Requires: amiri-quran-fonts
 Requires: sqlite
 Requires: pygobject3 >= 3.0.2
-Requires: python3-othman
+Requires: python-othman
 
 %description
 Othman Electronic Quran Browser displays Quranic text in Othmani script style
@@ -99,33 +99,33 @@ if [ -x %{_bindir}/gtk-update-icon-cache ] ; then
 %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
 fi
 
-%package -n python3-othman
+%package -n python-othman
 Summary: Quranic text python module
 Summary(ar): وحدة بيثون للنّص القرءاني
 License: WAQFv2
 BuildArch: noarch
-Requires: python3
+Requires: python
 
-%description -n python3-othman
+%description -n python-othman
 A python module that provides access to Quranic text with a fast search index
 
-%description -n python3-othman -l ar
+%description -n python-othman -l ar
 وحدة بيثون تقدّم وصولًا كاملًا للنّص القرءاني مع إمكانية البحث ضمن فهرسة سريعة
 
 %files
 %license COPYING waqf2-ar.pdf
 %doc README README-ar.txt
 %{_bindir}/othman-browser
-%{python3_sitelib}/othman/gtkUi.p*
+%{python2_sitelib}/othman/gtkUi.p*
 %{_datadir}/applications/*.desktop
 %{_datadir}/locale/*/*/*.mo
 %{_datadir}/icons/hicolor/*/apps/*.png
 %{_datadir}/appdata/%{name}.appdata.xml
 
-%files -n python3-othman
+%files -n python-othman
 %license COPYING waqf2-ar.pdf
 %doc README README-ar.txt
-%dir %{python3_sitelib}/othman
+%dir %{python2_sitelib}/othman
 %dir %{_datadir}/othman
 %{python2_sitelib}/*.egg-info
 %{python2_sitelib}/othman/core.p*
@@ -134,9 +134,8 @@ A python module that provides access to Quranic text with a fast search index
 %{_datadir}/othman/*
 
 %changelog
-* Sun Jan 8 2017 Mosaab Alzoubi <moceap@hotmail.com> - 1.0-1
-- Update to 1.0
-- Use Python3
+* Sun Jan 8 2017 Mosaab Alzoubi <moceap@hotmail.com> - 0.5-1
+- Update to 0.5
 - New way to get Github upstream
 - Add appdata
 
