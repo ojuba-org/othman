@@ -21,8 +21,8 @@ Copyright © 2009-2010, Muayyad Alsadi <alsadi@ojuba.org>
 import sys, os, os.path, time
 import sqlite3
 import array
+from itertools import imap
 import threading
-from functools import reduce
 import univaruints
 
 data_dir = None
@@ -108,7 +108,7 @@ class othmanCore(object):
 
     def _getConnection(self):
         n = threading.current_thread().name
-        if n in self._cn:
+        if self._cn.has_key(n):
             r = self._cn[n]
         else:
             r = sqlite3.connect(self.db_fn)
@@ -191,7 +191,7 @@ class searchIndexer:
 
     def _getConnection(self):
         n = threading.current_thread().name
-        if n in self._cn:
+        if self._cn.has_key(n):
             r = self._cn[n]
         else:
             r = sqlite3.connect(self.db_fn)
@@ -233,7 +233,7 @@ class searchIndexer:
         r = cn.execute('SELECT w, i FROM ix WHERE w LIKE ?', (W, ))
         if not r:
             return []
-        return map(lambda i: f(i), r)
+        return imap(lambda i: f(i), r)
 
     def find(self, words):
         if not words:
@@ -264,7 +264,7 @@ class searchIndexer:
         w = self.normalize(word)
         #if not w: print word; return
         self.maxWordLen = max(self.maxWordLen,len(w))
-        if w in self.d:
+        if self.d.has_key(w):
             self.d[w].add(ayaId)
         else:
             self.d[w] = searchIndexerItem((ayaId,))
