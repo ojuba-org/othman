@@ -184,6 +184,15 @@ class othmanUi(Gtk.Window, othmanCore):
         hb.pack_start(b, False, False, 0)
         b.connect("clicked", lambda *a: self.show_about_dlg(self))
 
+        hb.pack_start(Gtk.VSeparator(),False, False, 6)
+        img = Gtk.Image()
+        img.set_from_stock(Gtk.STOCK_QUIT, Gtk.IconSize.BUTTON)
+        b = Gtk.Button()
+        b.add(img)
+        hb.pack_start(b, False, False, 0)
+        b.connect("clicked", lambda *a: self.quit(self))
+
+
 
         self.scale = 1
         self.txt = Gtk.ListStore(str,int,str)
@@ -197,7 +206,7 @@ class othmanUi(Gtk.Window, othmanCore):
         #self.cells[0].set_property("alignment",Pango.ALIGN_CENTER)
         self.cells[0].set_property("wrap-mode", Pango.WrapMode.WORD)
         self.cells[0].set_property("wrap-width", 500)
-        self.cells[0].set_property("font", "Amiri Quran 24")
+        self.cells[0].set_property("font", "Simplified Naskh 32")
         #self.cells[0].set_property("font","KFGQPC Uthmanic Script HAFS 32")
         self.cells[0].set_property("scale", self.scale)
         self.cols[0].set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
@@ -248,12 +257,13 @@ class othmanUi(Gtk.Window, othmanCore):
         dlg.set_website_label("http://othman.ojuba.org")
         dlg.set_authors(["Muayyad Saleh Alsadi <alsadi@ojuba.org>"])
         dlg.set_translator_credits(_("translator-credits"))
+        # TODO: ^ this was for debugging!
         fn = os.path.join(self.data_dir, "quran-kareem.svg")
         try:
-            logo = GdkPixbuf.Pixbuf.new_from_file_at_size(fn, 128, 128)
+            logo = GdkPixbuf.Pixbuf.new_from_file_at_size("/usr/local/share/othman/quran-kareem.png", 128, 128) # this was changed
         except:
             fn = os.path.join(self.data_dir, "quran-kareem.png")
-            logo = GdkPixbuf.pixbuf_new_from_file(fn)
+            logo = GdkPixbuf.pixbuf_new_from_file("/usr/local/share/othman/quran-kareem.png") # this was changed by me
         dlg.set_logo(logo)
         #dlg.set_logo_icon_name('Othman')
         dlg.run()
@@ -333,9 +343,27 @@ class othmanUi(Gtk.Window, othmanCore):
         a = [' ', '\n', ' * ', ' *\n']
         s = a[int(i) * 2 + int(self.cp_aya_perline.get_active())]
         s = s.join([l[i] for l in self.getSuraIter(sura, n, aya1)]) + '\n'
+        
+        #TODO: add "No Erab" feature, strategy is replacing all erabs with ""
+        # or replacing any character which is not letter with ""
+
+        erabs = (u'\u064b', u'\u064c', u'\u064d', u'\u064e', u'\u064f', u'\u0650', u'\u0651', u'\u0652', u'\u0653', u'\u0654', u'\u0655', )
+
+        if self.cp_just_letters.get_active():
+            s = list(s)
+            for i in range(len(s)):
+                for e in erabs:
+                    if s[i] == e:
+                        s[i] = ""
+            s = "".join(s)
+                        
+
+
+
         self.clip1.set_text(s, -1)
         self.clip2.set_text(s, -1)
         self.cp_w.hide()
+
 
     def cp_sura_cb(self, *a):
         sura = self.cp_sura.get_active() + 1
@@ -371,6 +399,7 @@ class othmanUi(Gtk.Window, othmanCore):
         s.set_adjustment(adj)
         self.cp_is_imlai = Gtk.CheckButton(_("Imla'i style"))
         self.cp_aya_perline = Gtk.CheckButton(_("an Aya per line"))
+        self.cp_just_letters = Gtk.CheckButton(_("just letters(no e\'rab)"))
         self.cp_ok = Gtk.Button(stock=Gtk.STOCK_OK)
         self.cp_cancel = Gtk.Button(stock=Gtk.STOCK_CANCEL)
         vb = Gtk.VBox(False,0)
@@ -389,6 +418,7 @@ class othmanUi(Gtk.Window, othmanCore):
         vb.pack_start(hb,True,True,6)
         hb.pack_start(self.cp_is_imlai,False,False,3)
         hb.pack_start(self.cp_aya_perline,False,False,3)
+        hb.pack_start(self.cp_just_letters, False, False, 3)
         hb = Gtk.HBox(False,6)
         vb.pack_start(hb,True,True,6)
         hb.pack_start(self.cp_ok,False,False,6)

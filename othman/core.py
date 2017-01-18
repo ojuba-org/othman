@@ -111,7 +111,8 @@ class othmanCore(object):
         if self._cn.has_key(n):
             r = self._cn[n]
         else:
-            r = sqlite3.connect(self.db_fn)
+            r = sqlite3.connect("/usr/local/share/othman/quran.db")
+            # TODO: it was originaly self.db_fn not this!
             self._cn[n] = r
         return r
 
@@ -194,7 +195,7 @@ class searchIndexer:
         if self._cn.has_key(n):
             r = self._cn[n]
         else:
-            r = sqlite3.connect(self.db_fn)
+            r = sqlite3.connect("/usr/local/share/othman/quran.db")
             self._cn[n] = r
         return r
 
