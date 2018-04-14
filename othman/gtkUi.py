@@ -364,11 +364,10 @@ class othmanUi(Gtk.Window, othmanCore):
         for i in self.sura_ls:
             self.cp_sura.append_text(i)
         self.cp_sura.set_tooltip_text(_("choose a Sura"))
-        adj = Gtk.Adjustment(0, 0, 286, 1, 10, 0)
         self.cp_from = s = Gtk.SpinButton()
-        s.set_adjustment(adj)
+        s.set_adjustment(Gtk.Adjustment(0, 0, 286, 1, 10, 0))
         self.cp_to = s = Gtk.SpinButton()
-        s.set_adjustment(adj)
+        s.set_adjustment(Gtk.Adjustment(0, 0, 286, 1, 10, 0))
         self.cp_is_imlai = Gtk.CheckButton(_("Imla'i style"))
         self.cp_aya_perline = Gtk.CheckButton(_("an Aya per line"))
         self.cp_ok = Gtk.Button(stock=Gtk.STOCK_OK)
