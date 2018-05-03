@@ -8,7 +8,7 @@ TARGETS=${SOURCES:.in=} othman-data/quran.db
 all: $(TARGETS) icons othman-data/ix.db
 
 icons:
-	for i in 96 72 64 48 36 32 24 22 16; do \
+	for i in 128 96 72 64 48 36 32 24 22 16; do \
 		convert Othman-128.png -resize $${i}x$${i} Othman-$${i}.png; \
 	done
 
@@ -28,7 +28,7 @@ install: all
 	python setup.py install -O2 --root $(DESTDIR)
 	$(INSTALL) -d $(datadir)/applications/
 	$(INSTALL) -m 0644 Othman.desktop $(datadir)/applications/
-	for i in 96 72 64 48 36 32 24 22 16; do \
+	for i in 128 96 72 64 48 36 32 24 22 16; do \
 		install -d $(datadir)/icons/hicolor/$${i}x$${i}/apps; \
 		$(INSTALL) -m 0644 -D Othman-$${i}.png $(datadir)/icons/hicolor/$${i}x$${i}/apps/Othman.png; \
 	done
@@ -38,6 +38,6 @@ install: all
 
 clean:
 	rm -f $(TARGETS) othman-data/ix.db
-	for i in 96 72 64 48 36 32 24 22 16; do \
+	for i in 128 96 72 64 48 36 32 24 22 16; do \
 		rm -f Othman-$${i}.png; \
 	done
