@@ -172,18 +172,25 @@ class othmanUi(Gtk.Window, othmanCore):
         hb.pack_start(Gtk.VSeparator(), False, False, 6)
         hb.pack_start(Gtk.Image.new_from_stock(Gtk.STOCK_FIND, Gtk.IconSize.BUTTON), False, False, 0)
         search = Gtk.Entry(); search.set_width_chars(15)
-        hb.pack_start(search, False,False, 0)
+        hb.pack_start(search, False, False, 0)
         search.connect("activate", self.search_cb)
         self.search = search
 
-        hb.pack_start(Gtk.VSeparator(),False, False, 6)
+        hb.pack_start(Gtk.VSeparator(), False, False, 6)
         img = Gtk.Image()
         img.set_from_stock(Gtk.STOCK_ABOUT, Gtk.IconSize.BUTTON)
         b = Gtk.Button()
         b.add(img)
         hb.pack_start(b, False, False, 0)
         b.connect("clicked", lambda *a: self.show_about_dlg(self))
-
+        
+        hb.pack_start(Gtk.VSeparator(), False, False, 6)
+        img = Gtk.Image()
+        img.set_from_stock(Gtk.STOCK_QUIT, Gtk.IconSize.BUTTON)
+        b = Gtk.Button()
+        b.add(img)
+        hb.pack_start(b, False, False, 0)
+        b.connect("clicked", lambda *a: self.quit(self))
 
         self.scale = 1
         self.txt = Gtk.ListStore(str,int,str)
