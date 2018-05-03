@@ -1,7 +1,7 @@
 %global owner ojuba-org
 
 Name: othman
-Version: 0.5
+Version: 0.5.1
 Release: 1%{?dist}
 Summary: Electronic Quran Browser
 Summary(ar): مصحف إلكتروني
