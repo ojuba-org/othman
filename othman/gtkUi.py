@@ -21,7 +21,7 @@ Copyright © 2008-2010, Muayyad Alsadi <alsadi@ojuba.org>
 import sys, os, os.path, time
 import gettext
 from gi.repository import Gtk, Gdk, GLib, Pango, GdkPixbuf
-from core import othmanCore, searchIndexer
+from .core import othmanCore, searchIndexer
 
 class searchWindow(Gtk.Window):
     def __init__(self, w):
@@ -83,8 +83,8 @@ class searchWindow(Gtk.Window):
         if not txt:
             self.hide()
             return
-        if type(txt) == str:
-            txt = txt.decode('utf-8')
+        #if type(txt) == str:
+        #    txt = txt.decode('utf-8')
         if txt == self.last_txt:
             # TODO: just move cursor to next/prev result before showing it
             pass
@@ -414,7 +414,7 @@ def main():
     ld = os.path.join(exedir,'..', 'share', 'locale')
     if not os.path.exists(ld):
         ld = os.path.join(exedir, 'locale')
-    gettext.install('othman', ld, unicode = 0)
+    gettext.install('othman', ld)
     w = othmanUi()
     Gtk.main()
 

@@ -21,9 +21,9 @@ Copyright © 2009-2010, Muayyad Alsadi <alsadi@ojuba.org>
 import sys, os, os.path, time
 import sqlite3
 import array
-from itertools import imap
 import threading
-import univaruints
+from functools import reduce
+from . import univaruints
 
 data_dir = None
 
@@ -108,7 +108,7 @@ class othmanCore(object):
 
     def _getConnection(self):
         n = threading.current_thread().name
-        if self._cn.has_key(n):
+        if n in self._cn:
             r = self._cn[n]
         else:
             r = sqlite3.connect(self.db_fn)
@@ -191,7 +191,7 @@ class searchIndexer:
 
     def _getConnection(self):
         n = threading.current_thread().name
-        if self._cn.has_key(n):
+        if n in self._cn:
             r = self._cn[n]
         else:
             r = sqlite3.connect(self.db_fn)
@@ -206,7 +206,7 @@ class searchIndexer:
             b = univaruints.incremental_encode(self.d[w].toAyaIdList())
             self.term_vectors_size += len(b)
             c.execute( 'INSERT INTO ix VALUES(?,?)', (w, sqlite3.Binary(b)) )
-        self.terms_count = len(self.d.keys())
+        self.terms_count = len(list(self.d.keys()))
         cn.commit()
 
     def _itemFactory(self, r):
@@ -233,7 +233,7 @@ class searchIndexer:
         r = cn.execute('SELECT w, i FROM ix WHERE w LIKE ?', (W, ))
         if not r:
             return []
-        return imap(lambda i: f(i), r)
+        return [f(i) for i in r]
 
     def find(self, words):
         if not words:
@@ -264,7 +264,7 @@ class searchIndexer:
         w = self.normalize(word)
         #if not w: print word; return
         self.maxWordLen = max(self.maxWordLen,len(w))
-        if self.d.has_key(w):
+        if w in self.d:
             self.d[w].add(ayaId)
         else:
             self.d[w] = searchIndexerItem((ayaId,))
