@@ -1,6 +1,7 @@
 DESTDIR?=/
 datadir?=$(DESTDIR)/usr/share
 INSTALL=install
+PYTHON=/usr/bin/python3
 
 SOURCES=$(wildcard *.desktop.in)
 TARGETS=${SOURCES:.in=}
@@ -14,14 +15,14 @@ icons:
 
 othman-data/ix.db: othman-data/quran.db
 	rm othman-data/ix.db || :
-	python gen-index.py
+	$(PYTHON) gen-index.py
 
 pos:
 	make -C po all
 
 install: all
 	rm othman-data/quran-kareem.png || :
-	python setup.py install -O2 --root $(DESTDIR)
+	$(PYTHON) setup.py install -O2 --root $(DESTDIR)
 	$(INSTALL) -d $(datadir)/applications/
 	$(INSTALL) -m 0644 Othman.desktop $(datadir)/applications/
 	for i in 96 72 64 48 36 32 24 22 16; do \
