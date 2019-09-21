@@ -29,7 +29,7 @@ from functools import reduce
 from operator import lt, le, gt, ge
 
 from . import univaruints
-imap=map
+#imap=map
 
 data_dir = None
 
@@ -169,7 +169,7 @@ def normalize(s):
 
 class searchIndexerItem(set):
     def __init__(self, *a):
-        super().__init__(*a)
+        super(searchIndexerItem, self).__init__(*a)
 
     def __or__(self, y):
         return searchIndexerItem(self.union(y))
@@ -216,11 +216,11 @@ class searchIndexer:
         cn.commit()
 
     def _itemFactory(self, r):
-        a = univaruints.incremental_decode(r[1])
+        a = univaruints.incremental_decode(bytearray(r[1]))
         return r[0], searchIndexerItem(a)
 
     def _itemFactory2(self, r):
-        a = univaruints.incremental_decode(r[1])
+        a = univaruints.incremental_decode(bytearray(r[1]))
         return searchIndexerItem(a)
 
     def get(self, w):
@@ -239,7 +239,7 @@ class searchIndexer:
         r = cn.execute('SELECT w, i FROM ix WHERE w LIKE ?', (W, ))
         if not r:
             return []
-        return imap(lambda i: f(i), r)
+        return map(lambda i: f(i), r)
 
     def find(self, words):
         if not words:
