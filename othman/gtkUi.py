@@ -23,6 +23,9 @@ import gettext
 from gi.repository import Gtk, Gdk, GLib, Pango, GdkPixbuf
 from .core import othmanCore, searchIndexer
 
+PY2 = sys.version_info[0]==2
+BYTE = str if PY2 else bytes
+
 class searchWindow(Gtk.Window):
     def __init__(self, w):
         Gtk.Window.__init__(self)
@@ -83,8 +86,8 @@ class searchWindow(Gtk.Window):
         if not txt:
             self.hide()
             return
-        #if type(txt) == str:
-        #    txt = txt.decode('utf-8')
+        if type(txt) == BYTE:
+            txt = txt.decode('utf-8')
         if txt == self.last_txt:
             # TODO: just move cursor to next/prev result before showing it
             pass
