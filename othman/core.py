@@ -21,9 +21,15 @@ Copyright © 2009-2010, Muayyad Alsadi <alsadi@ojuba.org>
 import sys, os, os.path, time
 import sqlite3
 import array
-from itertools import imap
+#from itertools import imap
+
 import threading
-import univaruints
+
+from functools import reduce
+from operator import lt, le, gt, ge
+
+from . import univaruints
+imap=map
 
 data_dir = None
 
@@ -51,9 +57,9 @@ def guessDataDir():
     data_dir = os.path.abspath(os.path.realpath(d))
     return data_dir
 
-def cmp_bisect_right(ccmp, a, x, lo=0, hi=None):
+def cmp_bisect_right(cgt, a, x, lo=0, hi=None):
     """
-        same as bisect.bisect but uses custom cmp function
+        same as bisect.bisect but uses custom greater-than function cgt
     """
     if lo < 0:
         raise ValueError('lo must be non-negative')
@@ -61,15 +67,15 @@ def cmp_bisect_right(ccmp, a, x, lo=0, hi=None):
         hi = len(a)
     while lo < hi:
         mid = (lo + hi) >> 1
-        if ccmp(a[mid], x) > 0:
-            hi = mid # ie. if x < a[mid]
+        if cgt(a[mid], x):
+            hi = mid
         else:
             lo = mid + 1
     return lo
 
-def cmp_bisect_left(ccmp, a, x, lo=0, hi=None):
+def cmp_bisect_left(cgt, a, x, lo=0, hi=None):
     """
-        same as bisect.bisect_left but uses custom cmp function
+        same as bisect.bisect_left but uses custom greater function cgt
     """
     if lo < 0:
         raise ValueError('lo must be non-negative')
@@ -77,8 +83,8 @@ def cmp_bisect_left(ccmp, a, x, lo=0, hi=None):
         hi = len(a)
     while lo < hi:
         mid = (lo + hi) >> 1
-        if ccmp(x, a[mid]) > 0:
-            lo = mid + 1 # ie. if a[mid] < x
+        if gt(x, a[mid]):
+            lo = mid + 1
         else:
             hi = mid
     return lo
@@ -108,7 +114,7 @@ class othmanCore:
 
     def _getConnection(self):
         n = threading.current_thread().name
-        if self._cn.has_key(n):
+        if n in self._cn:
             r = self._cn[n]
         else:
             r = sqlite3.connect(self.db_fn)
@@ -119,7 +125,7 @@ class othmanCore:
         return sura != 1 and sura != 9
 
     def suraAyaFromAyaId(self, ayaId):
-        sura = cmp_bisect_right(lambda i, j: cmp(i[3], j), self.suraInfoById, ayaId)
+        sura = cmp_bisect_right(lambda i, j: gt(i[3], j), self.suraInfoById, ayaId)
         aya = ayaId - self.suraInfoById[sura-1][3] + 1
         return sura, aya
 
@@ -163,13 +169,13 @@ def normalize(s):
 
 class searchIndexerItem(set):
     def __init__(self, *a):
-        set.__init__(self, *a)
+        super().__init__(*a)
 
     def __or__(self, y):
-        return self.union(y)
+        return searchIndexerItem(self.union(y))
 
     def __and__(self, y):
-        return self.intersection(y)
+        return searchIndexerItem(self.intersection(y))
 
     def toAyaIdList(self):
         l = list(self)
@@ -191,7 +197,7 @@ class searchIndexer:
 
     def _getConnection(self):
         n = threading.current_thread().name
-        if self._cn.has_key(n):
+        if n in self._cn:
             r = self._cn[n]
         else:
             r = sqlite3.connect(self.db_fn)
@@ -264,7 +270,7 @@ class searchIndexer:
         w = self.normalize(word)
         #if not w: print word; return
         self.maxWordLen = max(self.maxWordLen,len(w))
-        if self.d.has_key(w):
+        if w in self.d:
             self.d[w].add(ayaId)
         else:
             self.d[w] = searchIndexerItem((ayaId,))
