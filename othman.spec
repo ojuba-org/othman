@@ -2,8 +2,6 @@ Name:		othman
 Version:	0.3.0
 Release:	1%{?dist}
 Summary:	Othman Electronic Quran Browser
-# sitelib for noarch packages, sitearch for others (remove the unneeded one)
-%{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Group:		Applications/Productivity
 License:	Waqf
@@ -11,9 +9,9 @@ URL:		http://othman.ojuba.org
 Source:		http://git.ojuba.org/cgit/%{name}/snapshot/%{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
-BuildRequires:	python
+BuildRequires:	python3, python3-gobject
 Requires:	islamic-menus, arabeyes-core-fonts
-Requires:   pygobject3 >= 3.0.2
+Requires:	python3-gobject
 Requires:	python-othman
 %description
 Othman Electronic Quran Browser displays Quranic text in Othmani script style
@@ -59,7 +57,7 @@ a python package that provides access to Quranic text with a fast search index
 %defattr(-,root,root,-)
 %doc LICENSE-en LICENSE-ar.txt README README-ar.txt COPYING
 %{_bindir}/othman-browser
-%{python_sitelib}/othman/gtkUi.p*
+%{python3_sitelib}/othman/gtkUi.p*
 %{_datadir}/applications/*.desktop
 %{_datadir}/locale/*/*/*.mo
 %{_datadir}/icons/hicolor/*/apps/*.png
@@ -67,12 +65,12 @@ a python package that provides access to Quranic text with a fast search index
 %files -n python-othman
 %defattr(-,root,root,-)
 %doc LICENSE-en LICENSE-ar.txt README README-ar.txt COPYING
-%dir %{python_sitelib}/othman
+%dir %{python3_sitelib}/othman
 %dir %{_datadir}/othman
-%{python_sitelib}/*.egg-info
-%{python_sitelib}/othman/core.p*
-%{python_sitelib}/othman/varuints.p*
-%{python_sitelib}/othman/__init__.p*
+%{python3_sitelib}/*.egg-info
+%{python3_sitelib}/othman/core.p*
+%{python3_sitelib}/othman/varuints.p*
+%{python3_sitelib}/othman/__init__.p*
 %{_datadir}/othman/*
 
 %changelog
