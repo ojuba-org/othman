@@ -11,6 +11,7 @@ othman.pot: $(SOURCES)
 	msgfmt $*.po -o $*.mo
 	mkdir -p ../locale/$*/LC_MESSAGES/ || :
 	cp $*.mo ../locale/$*/LC_MESSAGES/othman.mo
+	touch ../*.desktop.in
 
 %.po: othman.pot
 	intltool-update -g othman -d $*
