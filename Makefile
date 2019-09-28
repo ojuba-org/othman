@@ -3,9 +3,9 @@ PREFIX?=$(DESTDIR)/usr
 datadir?=$(PREFIX)/share
 INSTALL=install
 PYTHON=/usr/bin/python3
-
 SOURCES=$(wildcard *.desktop.in)
 TARGETS=${SOURCES:.in=}
+TEST_DEPS=0
 
 all: $(TARGETS) icons othman-data/ix.db
 
@@ -23,7 +23,7 @@ pos:
 	make -C po all
 
 install: all
-	$(PYTHON) -c 'import gi; gi.require_version("Gtk", "3.0")'
+	[ $(TEST_DEPS) == "1" ] && $(PYTHON) -c 'import gi; gi.require_version("Gtk", "3.0")'
 	rm othman-data/quran-kareem.png || :
 	$(PYTHON) setup.py install --prefix=$(PREFIX)
 	$(INSTALL) -d $(datadir)/applications/
@@ -37,7 +37,5 @@ install: all
 	intltool-merge -d po $< $@
 
 clean:
-	rm -f $(TARGETS) othman-data/ix.db
-	for i in 96 72 64 48 36 32 24 22 16; do \
-		rm -f icons/Othman-$${i}.png; \
-	done
+	rm -f othman-data/ix.db
+

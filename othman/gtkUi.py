@@ -199,8 +199,10 @@ class othmanUi(Gtk.Window, othmanCore):
         #self.cells[0].set_property("foreground","#204000")
         #self.cells[0].set_property("alignment",Pango.ALIGN_CENTER)
         self.cells[0].set_property("wrap-mode", Pango.WrapMode.WORD)
-        self.cells[0].set_property("wrap-width", 500)
-        self.cells[0].set_property("font", "Simplified Naskh 32")
+        # TODO: on-max-min also readjust this value
+        self.cells[0].set_property("wrap-width", 300)
+        self.cells[0].set_property("font", "Amiri Quran 32")
+        #self.cells[0].set_property("font", "Simplified Naskh 32")
         #self.cells[0].set_property("font","KFGQPC Uthmanic Script HAFS 32")
         self.cells[0].set_property("scale", self.scale)
         self.cols[0].set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
