@@ -33,7 +33,8 @@ install: all
 		$(INSTALL) -m 0644 -D icons/Othman-$${i}.png $(datadir)/icons/hicolor/$${i}x$${i}/apps/Othman.png; \
 	done
 
-%.desktop: %.desktop.in pos
+%.desktop: %.desktop.in
+	echo "updating .desktop"
 	intltool-merge -d po $< $@
 
 clean:
