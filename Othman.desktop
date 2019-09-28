@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Name=Othman Quran Browser
+Name[ar]=مصحف عثمان الإلكتروني
+Name[de]=Othman Koran Browser
+GenericName=Electronic Mus-haf
+GenericName[ar]=المصحف الإلكتروني
+GenericName[de]=Elektronischer Mus-Haf
+Terminal=false
+TryExec=othman-browser
+Exec=othman-browser
+Icon=Othman
+Categories=X-Islamic-Software;X-Quran;GTK;
+StartupNotify=false
+

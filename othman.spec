@@ -1,5 +1,5 @@
 Name:		othman
-Version:	0.3.0
+Version:	0.6.0
 Release:	1%{?dist}
 Summary:	Othman Electronic Quran Browser
 
@@ -9,7 +9,7 @@ URL:		http://othman.ojuba.org
 Source:		http://git.ojuba.org/cgit/%{name}/snapshot/%{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
-BuildRequires:	python3, python3-gobject
+BuildRequires:	python3
 Requires:	islamic-menus, arabeyes-core-fonts
 Requires:	python3-gobject
 Requires:	python-othman
@@ -74,6 +74,9 @@ a python package that provides access to Quranic text with a fast search index
 %{_datadir}/othman/*
 
 %changelog
+* Sat Sep 28 2019  Muayyad Saleh AlSadi <alsadi@ojuba.org> - 0.6.0-1
+- python3
+
 * Mon Jun 4 2012  Muayyad Saleh AlSadi <alsadi@ojuba.org> - 0.2.8-1
 - port to gtk3
 

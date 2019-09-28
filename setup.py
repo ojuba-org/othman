@@ -3,13 +3,15 @@ import sys, os
 from distutils.core import setup
 from glob import glob
 
+from othman import __version__
+
 # to install type: 
 # python setup.py install --root=/
 
 locales=map(lambda i: ('share/'+i,[''+i+'/othman.mo',]),glob('locale/*/LC_MESSAGES'))
 data_files=[('share/othman/',glob('othman-data/*'))]
 data_files.extend(locales)
-setup (name='Othman', version='0.3.0',
+setup (name='Othman', version=__version__,
       description='Othman Quran Browser',
       author='Muayyad Saleh Alsadi',
       author_email='alsadi@ojuba.org',
@@ -31,5 +33,4 @@ setup (name='Othman', version='0.3.0',
           ],
       data_files=data_files
 )
-
 
