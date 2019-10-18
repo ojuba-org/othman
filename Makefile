@@ -7,7 +7,7 @@ SOURCES=$(wildcard *.desktop.in)
 TARGETS=${SOURCES:.in=}
 TEST_DEPS=0
 
-all: $(TARGETS) icons othman-data/ix.db
+all: $(TARGETS) icons
 
 icons:
 	install -d icons; 

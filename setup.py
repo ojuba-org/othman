@@ -8,6 +8,29 @@ from othman import __version__
 # to install type: 
 # python setup.py install --root=/
 
+from distutils.command.build import build
+from distutils.command.clean import clean
+
+class my_build(build):
+  def run(self):
+    build.run(self)
+    # generate data
+    from othman.core import othmanCore, searchIndexer
+
+    if not os.path.isfile('othman-data/ix.db'):
+      q=othmanCore(False)
+      ix=searchIndexer(True)
+      for n,(o,i) in enumerate(q.getAyatIter(1, 6236)):
+        for w in i.split(): ix.addWord(w,n+1)
+      d=os.path.dirname(sys.argv[0])
+      ix.save()
+
+class my_clean(clean):
+  def run(self):
+    clean.run(self)
+    try: os.unlink('othman-data/ix.db')
+    except OSError: pass
+
 locales=map(lambda i: ('share/'+i,[''+i+'/othman.mo',]),glob('locale/*/LC_MESSAGES'))
 data_files=[('share/othman/',glob('othman-data/*'))]
 data_files.extend(locales)
@@ -31,6 +54,7 @@ setup (name='Othman', version=__version__,
           "Programming Language :: Python :: 3.6",
           "Programming Language :: Python :: 3.7",
           ],
+      cmdclass={'build': my_build, 'clean': my_clean},
       data_files=data_files
 )
 
