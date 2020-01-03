@@ -7,50 +7,35 @@ Copyright © 2009-2013, Muayyad Alsadi <alsadi@ojuba.org>
 
 this implementation is unit-tested (by running this module)
 """
-
-from __future__ import print_function
-
 import struct, bisect
 int64=struct.Struct('>Q')
-shifts = [0, 128, 16512, 2113664, 270549120, 34630287488, 4432676798592, 567382630219904, 72624976668147840]
-shifts2 = shifts[2:]
-#n_by_chr=b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x04\x04\x04\x04\x04\x04\x04\x04\x05\x05\x05\x05\x06\x06\x07\x08'
-n_by_chr = bytearray([
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-  3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-  4, 4, 4, 4, 4, 4, 4, 4,
-  5, 5, 5, 5,
-  6, 6,
-  7,
-  8
-])
-
+shifts=[0, 128, 16512, 2113664, 270549120, 34630287488, 4432676798592, 567382630219904, 72624976668147840]
+shifts2=shifts[2:]
+n_by_chr='\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x04\x04\x04\x04\x04\x04\x04\x04\x05\x05\x05\x05\x06\x06\x07\x08'
 
 def bisect_right7(a, x):
-  if x<a[3]:
-    if x<a[1]:
-      if (x<a[0]):
-        return 0
-      else:
-        return 1
+    if x<a[3]:
+        if x<a[1]:
+            if (x<a[0]):
+                return 0
+            else:
+                return 1
+        else:
+            if x<a[2]:
+                return 2
+            else:
+                return 3
     else:
-      if x<a[2]:
-        return 2
-      else:
-        return 3
-  else:
-    if x<a[5]:
-      if x<a[4]:
-        return 4
-      else:
-        return 5
-    else:
-      if x<a[6]:
-        return 6
-      else:
-        return 7
+        if x<a[5]:
+            if x<a[4]:
+                return 4
+            else:
+                return 5
+        else:
+            if x<a[6]:
+                return 6
+            else:
+                return 7
 
 
 
@@ -67,7 +52,7 @@ def write(f, s, max_items=0, incremental=0, unique=0, last_item=0):
   fwrite=f.write
   rbisect=bisect_right7 #bisect.bisect_right
   int64pack=int64.pack
-  char=lambda i: bytearray((i,))
+  char=chr
 
   count=0
   last_item-=unique
@@ -111,11 +96,12 @@ def read(f, max_items=0, incremental=0, unique=0, last_item=0):
     if o<128:
       v=o
     else:
-      n=n_by_chr[o]
+      n_ch=n_by_chr[o]
+      n=chr2int(n_ch)
       mask=127>>n
       payload=fread(n)
       if len(payload)<n: raise IOError
-      v=shifts[n] + (((o & mask)<< (n<<3)) | ( (int64unpack((b'\0'*(8-n))+payload))[0] ))
+      v=shifts[n] + (((o & mask)<< (n<<3)) | ( (int64unpack(('\0'*(8-n))+payload))[0] ))
     if incremental: v+=last_item+unique
     yield v
     last_item=v
@@ -125,35 +111,34 @@ def decode_single(s):
   """
   return number of bytes consumed and the decoded value
   """   
-  o=s[0]
+  o=ord(s[0])
   if o<128: return 1, o
-  n=n_by_chr[o]
- 
+  n_ch=n_by_chr[o]
+  n=ord(n_ch)
   mask=127>>n
-  return n+1, shifts[n] + (((o & mask)<< (n<<3)) | ( (int64.unpack((b'\0'*(8-n))+s[1:n+1]))[0] ))
+  return n+1, shifts[n] + (((o & mask)<< (n<<3)) | ( (int64.unpack(('\0'*(8-n))+s[1:n+1]))[0] ))
 
 def decode(s):
   "return a generator that yields all decoded integers"
   offset=0
   while offset<len(s):
-    o=s[offset] #ord(s[offset])
+    o=ord(chr(s[offset]))
     offset+=1
     if o<128: yield o # just an optimization
     else:
-      n=n_by_chr[o]
+      n_ch=n_by_chr[o]
+      n=ord(n_ch)
       mask=127>>n
-      yield shifts[n] + (((o & mask)<< (n<<3)) | ( (int64.unpack((b'\0'*(8-n))+s[offset:offset+n]))[0] ))
+      yield shifts[n] + (((o & mask)<< (n<<3)) | ( (int64.unpack(('\0'*(8-n)).encode("ISO-8859-1")+s[offset:offset+n]))[0] ))
       offset+=n
 
 def encode_single(v):
-    """
-    return bytearray representation of given value v
-    """
-    if v<128: return bytearray((v,))
+    if v<128: return chr(v)
     n=bisect_right7(shifts2, v)+1 #bisect.bisect_right(shifts2, v)+1
     offset=shifts[n]
     v-=offset
-    return bytearray([((0b1111111100000000>>n) & 255) | ( (127>>n) & (v>>(n<<3)) )]) + int64.pack(v)[8-n:]
+    r = chr(((0b1111111100000000>>n) & 255) | ( (127>>n) & (v>>(n<<3)) )).encode("ISO-8859-1") + int64.pack(v)[8-n:]
+    return r.decode("ISO-8859-1")
 
 def encode_single_alt(v):
     if v<128: return chr(v) # just an optimization
@@ -178,13 +163,7 @@ def encode_single_alt(v):
     return chr(msb) + p[8-n:]
 
 def encode(a):
-    """
-    encode given iterable a into bytearray
-    """
-    ret=bytearray([])
-    for i in a:
-      ret.extend(encode_single(i))
-    return ret
+    return "".join(map(encode_single, a))
 
 def incremental_encode_list(a, unique=1, last=0):
   if unique!=1 and unique!=0: raise ValueError
@@ -220,32 +199,27 @@ def incremental_decode(s, unique=1, last=0):
 
 if __name__ == "__main__":
   import time, itertools, random
-  imap = getattr(itertools, "imap", map)
-  try: from cStringIO import StringIO
-  except ImportError: from io import BytesIO as StringIO
+  from cStringIO import StringIO
   boundary=[(i-1,i,i+1) for i in shifts[1:]]
   boundary=list(itertools.chain(*boundary))
   boundary.insert(0,0)
-  print("simple unit tests...")
+  print ("simple unit tests...")
   l1=[0,1,100,200,300,500,1000,10000]
   for i in l1:
-    print('before dec:', i, ', hex:', hex(i), ', bin:', bin(i))
+    print ('before dec:', i, ', hex:', hex(i), ', bin:', bin(i))
     e=encode_single(i)
-    print('after len:',len(e), ', str:', repr(e))
+    print ('after len:',len(e), ', str:', repr(e))
     assert i == decode_single(encode_single(i))[1]
   f=StringIO()
   write(f, l1)
   f.seek(0)
   assert l1==list(read(f))
-  print("boundary unit tests...")
+  print ("boundary unit tests...")
   for i in boundary:
-    print('before dec:', i, ', hex:', hex(i), ', bin:', bin(i))
+    print ('before dec:', i, ', hex:', hex(i), ', bin:', bin(i))
     e=encode_single(i)
-    print('after len:',len(e), ', str:', repr(e))
+    print ('after len:',len(e), ', str:', repr(e))
     assert i == decode_single(encode_single(i))[1]
-  print(boundary)
-  print(encode(boundary))
-  print(list(decode(encode(boundary))))
   assert boundary == list(decode(encode(boundary)))
   assert boundary == list(incremental_decode(incremental_encode(boundary, unique=0), unique=0))
   assert boundary == list(incremental_decode(incremental_encode(boundary, unique=1), unique=1))
@@ -264,7 +238,7 @@ if __name__ == "__main__":
   assert boundary == list(read(f, 0, 1, 1))
 
 
-  print("random unit tests...")
+  print ("random unit tests...")
   l=[random.randint(0, 5000000) for i in range(1000)]
   s=encode(l)
   l2=list(decode(s))
@@ -285,10 +259,10 @@ if __name__ == "__main__":
   l2=list(incremental_decode(incremental_encode(l, unique=1), unique=1))
   assert l2==l
 
-  print("pass")
-  print("performance tests")
+  print ("pass")
+  print ("performance tests")
   q=struct.Struct('>Q')
-  pack=lambda l: b''.join(imap(lambda i: q.pack(i), l))
+  pack=lambda l: ''.join(itertools.imap(lambda i: q.pack(i), l))
   def unpack(s):
       for i in range(0,len(s),8):
           yield q.unpack(s[i:i+8])[0]
@@ -296,7 +270,7 @@ if __name__ == "__main__":
   for i in range(1000): list(unpack(pack(boundary)))
   t2=time.time()
   delta_pack=t2-t1
-  print('struct-based done in ', delta_pack)
+  print ('struct-based done in ', delta_pack)
 
   f=StringIO()
   t1=time.time()
@@ -306,23 +280,23 @@ if __name__ == "__main__":
     f.seek(0)
     list(read(f))
   t2=time.time()
-  print('file-like done in ', t2-t1)
+  print ('file-like done in ', t2-t1)
 
 
   t1=time.time()
   for i in range(1000): list(decode(encode(boundary)))
   t2=time.time()
   delta_our=t2-t1
-  print('we are done in ', delta_our)
+  print ('we are done in ', delta_our)
   t1=time.time()
   for i in range(1000): encode(boundary)
   t2=time.time()
   delta_our=t2-t1
-  print('we are done in encoding in ', delta_our)
+  print ('we are done in encoding in ', delta_our)
   e=encode(boundary)
   t1=time.time()
   for i in range(1000): list(decode(e))
   t2=time.time()
   delta_our=t2-t1
-  print('we are done in decoding in ', delta_our)
+  print ('we are done in decoding in ', delta_our)
 
