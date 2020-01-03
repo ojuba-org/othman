@@ -22,16 +22,20 @@ import sys, os, os.path, time
 import sqlite3
 import array
 #from itertools import imap
-
 import threading
-
 from functools import reduce
-from operator import lt, le, gt, ge
+from .univaruints import *
+try:
+    from itertools import imap
+except:
+    imap = lambda *args, **kwargs: list(map(*args, **kwargs))
 
-from . import univaruints
-#imap=map
+
 
 data_dir = None
+
+def cmp(a, b):
+    return (a > b) - (a < b)
 
 def guessDataDir():
     global data_dir
@@ -57,25 +61,9 @@ def guessDataDir():
     data_dir = os.path.abspath(os.path.realpath(d))
     return data_dir
 
-def cmp_bisect_right(cgt, a, x, lo=0, hi=None):
+def cmp_bisect_right(ccmp, a, x, lo=0, hi=None):
     """
-        same as bisect.bisect but uses custom greater-than function cgt
-    """
-    if lo < 0:
-        raise ValueError('lo must be non-negative')
-    if hi is None:
-        hi = len(a)
-    while lo < hi:
-        mid = (lo + hi) >> 1
-        if cgt(a[mid], x):
-            hi = mid
-        else:
-            lo = mid + 1
-    return lo
-
-def cmp_bisect_left(cgt, a, x, lo=0, hi=None):
-    """
-        same as bisect.bisect_left but uses custom greater function cgt
+        same as bisect.bisect but uses custom cmp function
     """
     if lo < 0:
         raise ValueError('lo must be non-negative')
@@ -83,14 +71,30 @@ def cmp_bisect_left(cgt, a, x, lo=0, hi=None):
         hi = len(a)
     while lo < hi:
         mid = (lo + hi) >> 1
-        if gt(x, a[mid]):
+        if ccmp(a[mid], x) > 0:
+            hi = mid # ie. if x < a[mid]
+        else:
             lo = mid + 1
+    return lo
+
+def cmp_bisect_left(ccmp, a, x, lo=0, hi=None):
+    """
+        same as bisect.bisect_left but uses custom cmp function
+    """
+    if lo < 0:
+        raise ValueError('lo must be non-negative')
+    if hi is None:
+        hi = len(a)
+    while lo < hi:
+        mid = (lo + hi) >> 1
+        if ccmp(x, a[mid]) > 0:
+            lo = mid + 1 # ie. if a[mid] < x
         else:
             hi = mid
     return lo
 
 
-class othmanCore:
+class othmanCore(object):
     SQL_GET_AYAT = 'SELECT othmani, imlai FROM Quran WHERE id>=? ORDER BY id LIMIT ?'
     SQL_GET_SURA_INFO = 'SELECT rowid, sura_name, other_names, makki, starting_row, comment FROM SuraInfo ORDER BY rowid'
     def __init__(self, load_ix=True):
@@ -114,7 +118,7 @@ class othmanCore:
 
     def _getConnection(self):
         n = threading.current_thread().name
-        if n in self._cn:
+        if n in self._cn.keys():
             r = self._cn[n]
         else:
             r = sqlite3.connect(self.db_fn)
@@ -125,7 +129,7 @@ class othmanCore:
         return sura != 1 and sura != 9
 
     def suraAyaFromAyaId(self, ayaId):
-        sura = cmp_bisect_right(lambda i, j: gt(i[3], j), self.suraInfoById, ayaId)
+        sura = cmp_bisect_right(lambda i, j: cmp(i[3], j), self.suraInfoById, ayaId)
         aya = ayaId - self.suraInfoById[sura-1][3] + 1
         return sura, aya
 
@@ -169,13 +173,13 @@ def normalize(s):
 
 class searchIndexerItem(set):
     def __init__(self, *a):
-        super(searchIndexerItem, self).__init__(*a)
+        set.__init__(self, *a)
 
     def __or__(self, y):
-        return searchIndexerItem(self.union(y))
+        return self.union(y)
 
     def __and__(self, y):
-        return searchIndexerItem(self.intersection(y))
+        return self.intersection(y)
 
     def toAyaIdList(self):
         l = list(self)
@@ -197,7 +201,7 @@ class searchIndexer:
 
     def _getConnection(self):
         n = threading.current_thread().name
-        if n in self._cn:
+        if n in self._cn.keys():
             r = self._cn[n]
         else:
             r = sqlite3.connect(self.db_fn)
@@ -209,18 +213,18 @@ class searchIndexer:
         c = cn.cursor()
         c.execute('CREATE TABLE ix (w TEXT PRIMARY KEY NOT NULL, i BLOB)')
         for w in self.d:
-            b = univaruints.incremental_encode(self.d[w].toAyaIdList())
+            b = incremental_encode(self.d[w].toAyaIdList())
             self.term_vectors_size += len(b)
-            c.execute( 'INSERT INTO ix VALUES(?,?)', (w, sqlite3.Binary(b)) )
+            c.execute( 'INSERT INTO ix VALUES(?,?)', (w, sqlite3.Binary(b.encode("ISO-8859-1"))) )
         self.terms_count = len(self.d.keys())
         cn.commit()
 
     def _itemFactory(self, r):
-        a = univaruints.incremental_decode(bytearray(r[1]))
+        a = incremental_decode(r[1])
         return r[0], searchIndexerItem(a)
 
     def _itemFactory2(self, r):
-        a = univaruints.incremental_decode(bytearray(r[1]))
+        a = incremental_decode(r[1])
         return searchIndexerItem(a)
 
     def get(self, w):
@@ -239,7 +243,7 @@ class searchIndexer:
         r = cn.execute('SELECT w, i FROM ix WHERE w LIKE ?', (W, ))
         if not r:
             return []
-        return map(lambda i: f(i), r)
+        return imap(lambda i: f(i), r)
 
     def find(self, words):
         if not words:
@@ -264,13 +268,17 @@ class searchIndexer:
             w = self.normalize(W)
             y = reduce( lambda a,b: a|b, self.getPartial(w), searchIndexerItem() )
             x &= y
-        return x.toAyaIdList()
+        try :
+            return x.toAyaIdList()
+        except AttributeError:
+            x2 = searchIndexerItem(x)
+            return x2.toAyaIdList()
 
     def addWord(self, word, ayaId):
         w = self.normalize(word)
         #if not w: print word; return
         self.maxWordLen = max(self.maxWordLen,len(w))
-        if w in self.d:
+        if w in self.d.keys():
             self.d[w].add(ayaId)
         else:
             self.d[w] = searchIndexerItem((ayaId,))
