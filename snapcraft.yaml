@@ -22,7 +22,7 @@ parts:
       - fonts-hosny-amiri
     build-packages:
       - build-essential
-    override-pull: |
+    override-pull: | # copy Othman icon to prime folder to be find in Othman.desktop and loaded successfully
       snapcraftctl pull
       cp $SNAPCRAFT_PROJECT_DIR/othman.ico $SNAPCRAFT_PRIME/Othman
 
