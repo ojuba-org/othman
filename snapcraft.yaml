@@ -1,4 +1,4 @@
-name: othman
+name: othman-browser
 version: git
 summary: Othman Browser
 description: |
@@ -9,6 +9,8 @@ grade: stable
 
 base: core18
 confinement: strict
+
+compression: lzo
 
 parts:
   othman:

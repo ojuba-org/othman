@@ -38,6 +38,10 @@ def guessDataDir():
     if data_dir: return data_dir
     if not hasattr(sys, "frozen"):
         # we are not in py2exe
+        d = os.path.join('share', 'othman')
+        if os.path.exists(d):
+            data_dir=os.path.abspath(os.path.realpath(d))
+            return data_dir
         f = os.path.abspath(os.path.realpath(os.path.dirname(__file__)))
         d = os.path.join(f, '..', 'othman-data')
         if os.path.exists(d):
