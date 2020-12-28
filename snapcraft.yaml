@@ -1,0 +1,46 @@
+name: othman-browser
+version: git
+summary: Othman Browser
+description: |
+  Othman Electronic Quran Browser displays Quranic text in Othmani script style
+  as written under authority of Othman ibn Affan the companion of prophet Muhammad PBUH
+  Othman project features fast search, autoscrolling, copy Quranic text to clipboard.
+grade: stable
+
+base: core18
+confinement: strict
+
+compression: lzo
+
+parts:
+  othman:
+    plugin: python
+    python-version: python3
+    source: .
+    python-packages:
+      - setuptools
+      - PyGObject
+    stage-packages:
+      - fonts-hosny-amiri
+    build-packages:
+      - build-essential
+    override-pull: | # copy Othman icon to prime folder to be find in Othman.desktop and loaded successfully
+      snapcraftctl pull
+      cp $SNAPCRAFT_PROJECT_DIR/othman.ico $SNAPCRAFT_PRIME/Othman
+
+apps:
+  othman-browser:
+    command: bin/othman-browser
+    desktop: $SNAPCRAFT_PROJECT_DIR/Othman.desktop
+    extensions: [gnome-3-34]
+    plugs:
+      - desktop
+    slots:
+      - dbus-daemon
+    common-id: org.ojuba.Othman
+
+slots:
+  dbus-daemon:
+    interface: dbus
+    bus: session
+    name: org.ojuba.Othman
