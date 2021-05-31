@@ -20,6 +20,8 @@ Copyright © 2008-2010, Muayyad Alsadi <alsadi@ojuba.org>
 """
 import sys, os, os.path, time
 import gettext
+import gi
+gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk, GLib, Pango, GdkPixbuf
 from .core import othmanCore, searchIndexer
 
