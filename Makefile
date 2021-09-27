@@ -39,4 +39,8 @@ install: all
 
 clean:
 	rm -f othman-data/ix.db
+	rm -rf build
+	rm -f po/*.mo
+	rm -rf locale
+	rm -rf icons
 
