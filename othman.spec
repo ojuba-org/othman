@@ -10,9 +10,12 @@ Source:		http://git.ojuba.org/cgit/%{name}/snapshot/%{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
 BuildRequires:	python3
+BuildRequires: intltool
+
 Requires:	islamic-menus, arabeyes-core-fonts
 Requires:	python3-gobject
 Requires:	python-othman
+
 %description
 Othman Electronic Quran Browser displays Quranic text in Othmani script style
 as written under authority of Othman ibn Affan the companion of prophet Muhammad PBUH
@@ -69,8 +72,9 @@ a python package that provides access to Quranic text with a fast search index
 %dir %{_datadir}/othman
 %{python3_sitelib}/*.egg-info
 %{python3_sitelib}/othman/core.p*
-%{python3_sitelib}/othman/varuints.p*
+%{python3_sitelib}/othman/univaruints.p*
 %{python3_sitelib}/othman/__init__.p*
+%{python3_sitelib}/othman//__pycache__/*.pyc
 %{_datadir}/othman/*
 
 %changelog

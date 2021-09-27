@@ -23,7 +23,7 @@ pos:
 	make -C po all
 
 install: all
-	[ $(TEST_DEPS) == "1" ] && $(PYTHON) -c 'import gi; gi.require_version("Gtk", "3.0")'
+	[ $(TEST_DEPS) == "1" ] && $(PYTHON) -c 'import gi; gi.require_version("Gtk", "3.0")' || :
 	rm othman-data/quran-kareem.png || :
 	$(PYTHON) setup.py install --prefix=$(PREFIX)
 	$(INSTALL) -d $(datadir)/applications/
@@ -39,6 +39,7 @@ install: all
 
 clean:
 	rm -f othman-data/ix.db
+	rm -f othman-data/quran-kareem.png
 	rm -rf build
 	rm -f po/*.mo
 	rm -rf locale

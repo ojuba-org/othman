@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-28 13:37+0300\n"
+"POT-Creation-Date: 2021-09-27 11:26+0200\n"
 "PO-Revision-Date: 2010-08-27 23:29+0100\n"
 "Last-Translator: cegerxwin <cegerxwin@web.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,50 +16,50 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../Othman.desktop.in.h:1 ../othman/gtkUi.py:114 ../othman/gtkUi.py:234
+#: ../Othman.desktop.in.h:1 ../othman/gtkUi.py:118 ../othman/gtkUi.py:238
 msgid "Othman Quran Browser"
 msgstr "Othman Koran Browser"
 
-#: ../Othman.desktop.in.h:2 ../othman/gtkUi.py:237
+#: ../Othman.desktop.in.h:2 ../othman/gtkUi.py:241
 msgid "Electronic Mus-haf"
 msgstr "Elektronischer Mus-Haf"
 
-#: ../othman/gtkUi.py:38
+#: ../othman/gtkUi.py:42
 msgid "Search results"
 msgstr "Suchergebnisse"
 
-#: ../othman/gtkUi.py:56 ../othman/gtkUi.py:140
+#: ../othman/gtkUi.py:60 ../othman/gtkUi.py:144
 msgid "Sura"
 msgstr "Sure"
 
-#: ../othman/gtkUi.py:147 ../othman/gtkUi.py:371
+#: ../othman/gtkUi.py:151 ../othman/gtkUi.py:375
 msgid "choose a Sura"
 msgstr "Wähle eine Sure aus"
 
-#: ../othman/gtkUi.py:255
+#: ../othman/gtkUi.py:259
 msgid "translator-credits"
 msgstr "Übersetzer"
 
-#: ../othman/gtkUi.py:363
+#: ../othman/gtkUi.py:367
 msgid "Copy to clipboard"
 msgstr "In Zwischenablage kopieren"
 
-#: ../othman/gtkUi.py:378
+#: ../othman/gtkUi.py:382
 msgid "Imla'i style"
 msgstr "Imla'i Stil"
 
-#: ../othman/gtkUi.py:379
+#: ../othman/gtkUi.py:383
 msgid "an Aya per line"
 msgstr "eine Aya pro Zeile"
 
-#: ../othman/gtkUi.py:386
+#: ../othman/gtkUi.py:390
 msgid "Sorat:"
 msgstr ""
 
-#: ../othman/gtkUi.py:390
+#: ../othman/gtkUi.py:394
 msgid "Ayat from:"
 msgstr ""
 
-#: ../othman/gtkUi.py:392
+#: ../othman/gtkUi.py:396
 msgid "To"
 msgstr ""
