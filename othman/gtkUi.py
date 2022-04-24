@@ -18,6 +18,8 @@ Copyright © 2008-2010, Muayyad Alsadi <alsadi@ojuba.org>
         "http://waqf.ojuba.org/license"
 
 """
+import gi
+gi.require_version('Gtk', '3.0')
 import sys, os, os.path, time
 import gettext
 
