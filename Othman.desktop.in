@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
-_Name=Othman Quran Browser
-_GenericName=Electronic Mus-haf
+Name=Othman Quran Browser
+GenericName=Electronic Mus-haf
 Terminal=false
 TryExec=othman-browser
 Exec=othman-browser
